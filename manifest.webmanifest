@@ -1,0 +1,28 @@
+{
+  "name": "IRE 共识轻松学",
+  "short_name": "IRE轻松学",
+  "description": "前列腺癌不可逆电穿孔消融局灶治疗专家共识的图解故事化学习应用。",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f6f8f7",
+  "theme_color": "#0f766e",
+  "categories": ["education", "medical"],
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

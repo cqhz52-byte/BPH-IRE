@@ -1,0 +1,2655 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="前列腺癌不可逆电穿孔消融局灶治疗专家共识知识库、考试题库与 SOP 操作流程 PWA。">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>IRE 共识轻松学</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8f7;
+      --paper: #ffffff;
+      --ink: #17211f;
+      --muted: #60706c;
+      --line: #dce5e2;
+      --teal: #0f766e;
+      --teal-2: #14b8a6;
+      --blue: #2563eb;
+      --amber: #d97706;
+      --rose: #e11d48;
+      --mint: #dcfce7;
+      --sky: #dbeafe;
+      --sand: #fef3c7;
+      --pink: #ffe4e6;
+      --shadow: 0 10px 28px rgba(22, 39, 37, .06);
+      --radius: 8px;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, #e8f6f3 0, rgba(232, 246, 243, 0) 360px),
+        var(--bg);
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100dvh;
+      padding-bottom: 88px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 68px;
+      padding: 10px clamp(16px, 4vw, 40px);
+      background: rgba(255, 255, 255, .86);
+      border-bottom: 1px solid rgba(220, 229, 226, .92);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 190px;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      color: white;
+      background: linear-gradient(135deg, #0f766e, #2563eb);
+      box-shadow: 0 10px 24px rgba(15, 118, 110, .25);
+    }
+
+    .brand-mark svg,
+    .icon svg,
+    .nav-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .brand-subtitle {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .search {
+      position: relative;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .search input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px 10px 40px;
+      color: var(--ink);
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      outline: none;
+    }
+
+    .search input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, .16);
+    }
+
+    .search svg {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      color: var(--muted);
+      transform: translateY(-50%);
+    }
+
+    .install-btn,
+    .ghost-btn,
+    .primary-btn,
+    .chip-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .install-btn,
+    .primary-btn {
+      color: white;
+      background: var(--teal);
+      box-shadow: 0 10px 22px rgba(15, 118, 110, .18);
+    }
+
+    .ghost-btn,
+    .chip-btn {
+      color: var(--ink);
+      background: var(--paper);
+      border-color: var(--line);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+      gap: 22px;
+      width: min(1220px, calc(100% - 32px));
+      margin: 22px auto 0;
+    }
+
+    .side {
+      position: sticky;
+      top: 92px;
+      align-self: start;
+      max-height: calc(100dvh - 118px);
+      overflow: auto;
+      padding: 12px;
+      background: rgba(255, 255, 255, .82);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .side a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      color: var(--ink);
+      text-decoration: none;
+      border-radius: var(--radius);
+    }
+
+    .side a:hover,
+    .side a.active {
+      background: #ecfdf5;
+      color: #0f766e;
+    }
+
+    .progress-box {
+      padding: 14px;
+      margin-bottom: 10px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .progress-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      overflow: hidden;
+      background: #e5eee9;
+      border-radius: 999px;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+      transition: width .25s ease;
+    }
+
+    main {
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    section {
+      scroll-margin-top: 92px;
+    }
+
+    .view-hidden {
+      display: none !important;
+    }
+
+    .module-shell {
+      min-height: calc(100dvh - 112px);
+      min-width: 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+      gap: 24px;
+      align-items: center;
+      min-height: min(560px, calc(100dvh - 110px));
+      padding: clamp(20px, 5vw, 46px);
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, .92), rgba(38, 94, 142, .86)),
+        #0f766e;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero > * {
+      min-width: 0;
+    }
+
+    .hero h1 {
+      max-width: 720px;
+      margin: 0;
+      color: white;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.05;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .hero p {
+      max-width: 660px;
+      margin: 18px 0 0;
+      color: rgba(255, 255, 255, .88);
+      font-size: 18px;
+      line-height: 1.75;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .hero-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 12px 16px;
+      color: #073b36;
+      background: white;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .hero-actions a.secondary {
+      color: white;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .32);
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .module-link {
+      display: block;
+      min-height: 118px;
+      padding: 16px;
+      color: #123b36;
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid rgba(255, 255, 255, .7);
+      border-radius: var(--radius);
+      text-decoration: none;
+    }
+
+    .module-link strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .module-link span {
+      color: #315b55;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 360px;
+      padding: 22px;
+    }
+
+    .pulse-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: min(100%, 430px);
+      aspect-ratio: 1 / 1;
+      margin: auto;
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 48%, rgba(255, 255, 255, .22), rgba(255, 255, 255, .04) 58%, transparent 59%);
+    }
+
+    .prostate-graphic {
+      width: 64%;
+      filter: drop-shadow(0 24px 36px rgba(0, 0, 0, .16));
+    }
+
+    .pulse-ring {
+      position: absolute;
+      inset: 17%;
+      border: 2px solid rgba(255, 255, 255, .38);
+      border-radius: 50%;
+      animation: pulse 3.8s ease-out infinite;
+    }
+
+    .pulse-ring:nth-child(2) {
+      animation-delay: .75s;
+    }
+
+    .needle {
+      position: absolute;
+      width: 4px;
+      height: 48%;
+      top: 15%;
+      left: calc(50% - 2px);
+      background: linear-gradient(#fff, #bff7ef);
+      border-radius: 999px;
+      transform-origin: bottom center;
+      opacity: .9;
+    }
+
+    .needle.n1 { transform: rotate(-17deg); }
+    .needle.n2 { transform: rotate(13deg); }
+    .needle.n3 { transform: rotate(36deg); }
+
+    @keyframes pulse {
+      0% { transform: scale(.82); opacity: .8; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+
+    .notice {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px;
+      margin-top: 18px;
+      color: #0b3d38;
+      background: rgba(255, 255, 255, .78);
+      border-radius: var(--radius);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      max-width: 740px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card,
+    .tool-panel,
+    .quiz-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+      line-height: 1.35;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 5px 8px;
+      margin-bottom: 10px;
+      color: #075e55;
+      background: #ccfbf1;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .tag.strong { color: #1e3a8a; background: #dbeafe; }
+    .tag.warn { color: #92400e; background: #fef3c7; }
+    .tag.danger { color: #9f1239; background: #ffe4e6; }
+
+    .favorite {
+      float: right;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      color: var(--muted);
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .favorite.active {
+      color: var(--amber);
+      background: #fffbeb;
+      border-color: #fcd34d;
+    }
+
+    .storyline {
+      display: grid;
+      gap: 12px;
+      counter-reset: story;
+    }
+
+    .story-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .story-step::before {
+      counter-increment: story;
+      content: counter(story);
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      color: white;
+      background: var(--teal);
+      border-radius: var(--radius);
+      font-weight: 900;
+    }
+
+    .story-step h3 {
+      margin: 0 0 7px;
+    }
+
+    .story-step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .tool-panel {
+      padding: 18px;
+    }
+
+    .tool-tabs {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .tool-tabs .chip-btn {
+      flex: 0 0 auto;
+    }
+
+    .sop-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .knowledge-summary {
+      margin-bottom: 14px;
+    }
+
+    .sop-step {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .sop-step strong:first-child {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: #075e55;
+      background: #ccfbf1;
+      border-radius: var(--radius);
+      font-size: 13px;
+    }
+
+    .sop-step h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+
+    .sop-step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .med-card {
+      padding: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .med-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .med-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .med-card dl {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .med-card dt {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .med-card dd {
+      margin: 2px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .med-note {
+      padding: 14px;
+      margin-bottom: 14px;
+      color: #123b36;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      line-height: 1.7;
+    }
+
+    .care-timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .care-timeline.compact {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .timeline-step {
+      position: relative;
+      min-width: 0;
+      padding: 14px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .timeline-step::before {
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      margin-bottom: 10px;
+      background: var(--teal);
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px #ccfbf1;
+    }
+
+    .timeline-step time,
+    .timeline-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .timeline-step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .chip-btn.active {
+      color: white;
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .tool-screen {
+      display: none;
+      min-width: 0;
+    }
+
+    .tool-screen.active {
+      display: block;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .check-item input {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--teal);
+      flex: none;
+    }
+
+    .check-item span {
+      display: block;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .mini-diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .needle-map {
+      position: relative;
+      width: min(260px, 100%);
+      aspect-ratio: 1 / 1;
+      margin: auto;
+      background: #eefbf8;
+      border: 2px solid #9de3d9;
+      border-radius: 50%;
+    }
+
+    .lesion {
+      position: absolute;
+      inset: 35%;
+      background: #f97316;
+      border-radius: 45% 55% 52% 48%;
+    }
+
+    .margin-zone {
+      position: absolute;
+      inset: 25%;
+      border: 2px dashed #0f766e;
+      border-radius: 50%;
+    }
+
+    .pin {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #2563eb;
+      border: 2px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, .18);
+    }
+
+    .pin.p1 { top: 23%; left: 49%; }
+    .pin.p2 { top: 48%; left: 22%; }
+    .pin.p3 { top: 66%; left: 67%; }
+    .pin.p4 { top: 36%; left: 72%; }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .time-card {
+      padding: 14px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .time-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--teal);
+    }
+
+    .time-card span {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .route {
+      display: grid;
+      gap: 10px;
+    }
+
+    .route-node {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .route-node .icon,
+    .stat .icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--teal);
+      background: #ccfbf1;
+      border-radius: var(--radius);
+    }
+
+    .terms {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    details.term {
+      padding: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    details.term summary {
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    details.term p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .quiz-panel {
+      padding: 18px;
+    }
+
+    .quiz-question {
+      margin: 0 0 14px;
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answer {
+      width: 100%;
+      justify-content: flex-start;
+      min-height: 48px;
+      padding: 12px 14px;
+      color: var(--ink);
+      text-align: left;
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .answer.selected {
+      color: #075e55;
+      background: #ccfbf1;
+      border-color: #5eead4;
+    }
+
+    .answer.correct {
+      color: #065f46;
+      background: #dcfce7;
+      border-color: #86efac;
+    }
+
+    .answer.wrong {
+      color: #9f1239;
+      background: #ffe4e6;
+      border-color: #fda4af;
+    }
+
+    .quiz-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .quiz-meta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      color: #075e55;
+      background: #ccfbf1;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .text-answer {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      color: var(--ink);
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      outline: none;
+    }
+
+    .text-answer:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, .16);
+    }
+
+    .order-picked {
+      min-height: 48px;
+      padding: 12px;
+      color: var(--muted);
+      background: #f8fbfa;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      line-height: 1.6;
+    }
+
+    .quiz-feedback {
+      min-height: 54px;
+      padding: 12px;
+      margin-top: 12px;
+      color: var(--muted);
+      background: #f8fbfa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      line-height: 1.65;
+    }
+
+    .quiz-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .search-empty {
+      display: none;
+      padding: 18px;
+      color: var(--muted);
+      background: #fff;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .hidden-by-search {
+      display: none !important;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      z-index: 30;
+      display: none;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      padding: 8px;
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 46px rgba(15, 35, 33, .16);
+      backdrop-filter: blur(16px);
+    }
+
+    .bottom-nav a {
+      display: grid;
+      place-items: center;
+      gap: 3px;
+      min-height: 52px;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: var(--radius);
+      font-size: 11px;
+    }
+
+    .bottom-nav a.active {
+      color: var(--teal);
+      background: #ecfdf5;
+      font-weight: 800;
+    }
+
+    .nav-icon {
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 94px;
+      z-index: 40;
+      max-width: min(420px, calc(100% - 36px));
+      padding: 12px 14px;
+      color: white;
+      background: #123b36;
+      border-radius: var(--radius);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, .18);
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all .2s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .grid.three,
+      .grid.four,
+      .timeline,
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .bottom-nav {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .app {
+        padding-bottom: 92px;
+      }
+
+      .topbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 12px;
+        min-height: 0;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+      }
+
+      .brand-title {
+        font-size: 17px;
+      }
+
+      .brand-subtitle {
+        font-size: 11px;
+      }
+
+      .top-actions {
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .search {
+        min-width: 0;
+      }
+
+      .install-btn {
+        width: 44px;
+        padding: 0;
+      }
+
+      .install-btn span {
+        display: none;
+      }
+
+      .layout {
+        width: calc(100% - 16px);
+        margin-top: 8px;
+      }
+
+      .hero {
+        padding: 18px;
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+      }
+
+      .hero h1 {
+        max-width: 100%;
+        font-size: 28px;
+        line-height: 1.12;
+        word-break: break-all;
+      }
+
+      .hero p,
+      .notice {
+        word-break: break-all;
+      }
+
+      .hero p {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .module-link {
+        min-height: 94px;
+        padding: 14px;
+      }
+
+      .card,
+      .med-card,
+      .tool-panel,
+      .quiz-panel {
+        box-shadow: none;
+      }
+
+      .card,
+      .med-card,
+      .tool-panel,
+      .quiz-panel,
+      .sop-step,
+      .story-step,
+      details.term {
+        padding: 14px;
+      }
+
+      .tool-panel {
+        overflow: hidden;
+      }
+
+      .tool-tabs {
+        margin-right: -14px;
+        margin-left: -14px;
+        padding: 0 14px 8px;
+        max-width: calc(100vw - 16px);
+      }
+
+      .tool-tabs .chip-btn {
+        min-height: 38px;
+        padding: 9px 12px;
+        font-size: 14px;
+      }
+
+      .sop-list {
+        gap: 10px;
+      }
+
+      .sop-step {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .sop-step strong:first-child {
+        width: auto;
+        min-width: 44px;
+        height: 30px;
+        justify-self: start;
+        padding: 0 10px;
+        border-radius: 999px;
+      }
+
+      .sop-step h3 {
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      .sop-step p {
+        font-size: 14px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .grid.two,
+      .grid.three,
+      .grid.four,
+      .med-grid,
+      .care-timeline,
+      .care-timeline.compact,
+      .module-grid,
+      .terms,
+      .timeline,
+      .stats,
+      .mini-diagram {
+        grid-template-columns: 1fr;
+      }
+
+      .care-timeline {
+        gap: 10px;
+      }
+
+      .timeline-step {
+        padding: 13px 14px;
+      }
+
+      .timeline-step::before {
+        width: 8px;
+        height: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 0 0 4px #ccfbf1;
+      }
+
+      .timeline-step p {
+        overflow-wrap: anywhere;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .story-step {
+        grid-template-columns: 46px minmax(0, 1fr);
+      }
+
+      .story-step::before {
+        width: 42px;
+        height: 42px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="IRE 共识轻松学">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l0-7Z"></path></svg>
+        </div>
+        <div>
+          <p class="brand-title">IRE 共识轻松学</p>
+          <p class="brand-subtitle">知识库 · 题库 · SOP</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <label class="search" for="searchInput">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input id="searchInput" type="search" placeholder="搜 PSA、禁忌证、随访、复发...">
+        </label>
+        <button class="install-btn" id="installButton" type="button" title="安装到手机桌面">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+          <span>安装</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="side" aria-label="章节导航">
+        <div class="progress-box">
+          <div class="progress-head">
+            <span>学习进度</span>
+            <strong id="progressText">0%</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <nav id="sideNav">
+          <a href="#home" data-nav="home">首页 <span>01</span></a>
+          <a href="#quick" data-nav="quick">知识库 <span>02</span></a>
+          <a href="#meds" data-nav="meds">用药模块 <span>03</span></a>
+          <a href="#tools" data-nav="tools">SOP流程 <span>04</span></a>
+          <a href="#quiz" data-nav="quiz">考试题库 <span>05</span></a>
+        </nav>
+      </aside>
+
+      <main>
+        <section class="hero learning-section module-shell" id="home" data-module="home" data-title="首页 IRE 共识 电脉冲 局灶治疗">
+          <div>
+            <p class="eyebrow" style="color: rgba(255,255,255,.82)">前列腺癌 IRE 局灶治疗专家共识</p>
+            <h1>前列腺癌 IRE 治疗注意事项</h1>
+            <p>IRE 可以理解为：用电脉冲精准处理局部病灶，尽量保护尿道、括约肌、神经血管束等周围重要结构。</p>
+            <div class="hero-actions">
+              <a href="#quick">进入知识库</a>
+              <a class="secondary" href="#tools">查看 SOP</a>
+            </div>
+            <div class="module-grid" aria-label="主要功能入口">
+              <a class="module-link" href="#quick"><strong>知识库</strong><span>指南核心内容、入排标准、并发症、手术方式、随访疗效。</span></a>
+              <a class="module-link" href="#meds"><strong>用药模块</strong><span>围手术期常用药、适用时机、注意事项和特殊情况。</span></a>
+              <a class="module-link" href="#tools"><strong>SOP 操作流程</strong><span>按术前、术中、术后拆成标准作业步骤。</span></a>
+              <a class="module-link" href="#quiz"><strong>考试题库</strong><span>单选、多选、判断、排序、填空和病例题，适合培训考核。</span></a>
+            </div>
+            <div class="notice">
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg></span>
+              <div>本应用用于医学学习与共识理解，不替代临床诊疗决策。实际治疗需结合患者病情、医院条件和临床规范。</div>
+            </div>
+          </div>
+          <div class="hero-visual" aria-label="IRE 消融示意图">
+            <div class="pulse-stage">
+              <div class="pulse-ring"></div>
+              <div class="pulse-ring"></div>
+              <div class="needle n1"></div>
+              <div class="needle n2"></div>
+              <div class="needle n3"></div>
+              <svg class="prostate-graphic" viewBox="0 0 260 260" role="img" aria-label="前列腺和局部消融区域示意">
+                <path d="M132 42c32 0 54 18 64 49 19 4 33 22 33 45 0 42-44 86-98 86-54 0-99-44-99-86 0-24 15-42 35-46 10-30 32-48 65-48Z" fill="#f6fffd" opacity=".96"></path>
+                <path d="M91 89c17 23 12 64-18 87M169 89c-17 23-12 64 18 87" stroke="#8bd7ce" stroke-width="8" fill="none" stroke-linecap="round"></path>
+                <circle cx="134" cy="134" r="34" fill="#fb923c" opacity=".92"></circle>
+                <circle cx="134" cy="134" r="54" fill="none" stroke="#0f766e" stroke-width="5" stroke-dasharray="8 8"></circle>
+                <path d="M130 36v192" stroke="#2563eb" stroke-width="8" stroke-linecap="round"></path>
+                <path d="M103 55v145M158 58v139" stroke="#14b8a6" stroke-width="6" stroke-linecap="round"></path>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <div class="search-empty" id="searchEmpty">没找到相关内容。可以试试“PSA”“MRI”“禁忌证”“复发”。</div>
+
+        <section class="learning-section module-shell" id="quick" data-module="knowledge" data-title="知识库 指南内容 入排标准 并发症 手术方式 疗效评价">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">知识库</p>
+              <h2>把专家共识整理成可查、可学、可复习的知识库</h2>
+              <p class="section-copy">主要包含指南核心内容、入排标准、并发症、手术方式、随访与疗效评价。收藏按钮会记录你的重点。</p>
+            </div>
+            <button class="ghost-btn" id="resetProgress" type="button">重置进度</button>
+          </div>
+          <div class="grid four knowledge-summary">
+            <article class="card searchable" data-text="知识库 指南内容 推荐意见 IRE 局灶治疗">
+              <span class="tag strong">指南内容</span>
+              <h3>核心推荐</h3>
+              <p>用 7 条推荐意见抓住共识主干：适用人群、疗效评估、复发确认和特殊场景。</p>
+            </article>
+            <article class="card searchable" data-text="知识库 入排标准 适应证 禁忌证 低危 中危">
+              <span class="tag">入排标准</span>
+              <h3>适合谁，排除谁</h3>
+              <p>重点看低危/中危局限性前列腺癌、PSA、T 分期、Gleason 评分和禁忌证。</p>
+            </article>
+            <article class="card searchable" data-text="知识库 手术方式 术前 定位 布针 消融 导尿管">
+              <span class="tag">手术方式</span>
+              <h3>从术前到消融</h3>
+              <p>包括术前检查、麻醉、肿瘤定位、布针原则、消融参数和术后处理。</p>
+            </article>
+            <article class="card searchable" data-text="知识库 并发症 随访 疗效 复发 PSA MRI 活检">
+              <span class="tag warn">术后管理</span>
+              <h3>并发症与随访</h3>
+              <p>覆盖血尿、感染、排尿问题、PSA 趋势、MRI/超声造影、穿刺活检和复发处理。</p>
+            </article>
+          </div>
+          <div class="care-timeline searchable" data-text="专家共识 时间线 术前 术中 术后 随访 复发 PSA MRI 活检">
+            <article class="timeline-step">
+              <time>术前评估</time>
+              <p>确认低危/中危局限性前列腺癌等适用场景，同时排除麻醉、心脏、感染、癫痫等禁忌证。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术前准备</time>
+              <p>完成实验室检查、PSA、经会阴系统+靶向穿刺、多参数 MRI，并按需评估转移。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术中处理</time>
+              <p>以穿刺病理定位为主，影像辅助；按肿瘤边界外 5-10 mm 规划消融范围。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术后随访</time>
+              <p>1 个月测 PSA 和影像评估；之后每 3-6 个月随访，6 个月或 1 年可行活检评估。</p>
+            </article>
+          </div>
+          <div class="grid three" id="recommendations"></div>
+        </section>
+
+        <section class="learning-section" id="story" data-module="knowledge" data-title="临床故事 局限性 前列腺癌 术前准备 定位 布针 消融 随访 复发">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">知识补充</p>
+              <h2>临床路径速记</h2>
+              <p class="section-copy">这部分作为知识库补充，帮助把入排、手术和随访串起来。</p>
+            </div>
+          </div>
+          <div class="storyline" id="storyline"></div>
+        </section>
+
+        <section class="learning-section module-shell" id="tools" data-module="sop" data-title="SOP 操作流程 适应证 禁忌证 检查清单 布针 随访 疗效 复发">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">SOP 操作流程</p>
+              <h2>按标准作业步骤理解 IRE 治疗</h2>
+              <p class="section-copy">主入口是 SOP 指导；其他标签作为术前、布针、随访和并发症的补充速查。</p>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="tool-tabs" role="tablist" aria-label="SOP 与速查工具">
+              <button class="chip-btn active" type="button" data-tool="sop">SOP 指导</button>
+              <button class="chip-btn" type="button" data-tool="fit">适合谁</button>
+              <button class="chip-btn" type="button" data-tool="prep">术前准备</button>
+              <button class="chip-btn" type="button" data-tool="needle">布针记忆</button>
+              <button class="chip-btn" type="button" data-tool="follow">随访日历</button>
+              <button class="chip-btn" type="button" data-tool="effect">疗效与复发</button>
+              <button class="chip-btn" type="button" data-tool="complication">并发症</button>
+            </div>
+
+            <div class="tool-screen active" id="tool-sop">
+              <div class="care-timeline compact searchable" data-text="SOP 时间线 患者选择 术前准备 定位布针 消融 术后处理 随访复发">
+                <article class="timeline-step">
+                  <time>入排确认</time>
+                  <p>先判断适应证和禁忌证，明确能不能做。</p>
+                </article>
+                <article class="timeline-step">
+                  <time>术前准备</time>
+                  <p>完成检查、团队、麻醉、设备和药品准备。</p>
+                </article>
+                <article class="timeline-step">
+                  <time>定位布针</time>
+                  <p>以病理定位为主，确定消融边界和针间距。</p>
+                </article>
+                <article class="timeline-step">
+                  <time>消融执行</time>
+                  <p>输入针规格和针间距，监测脉冲参数完成消融。</p>
+                </article>
+                <article class="timeline-step">
+                  <time>术后处理</time>
+                  <p>拔针检查、尿道冲洗、留置导尿管、抗感染和生活指导。</p>
+                </article>
+                <article class="timeline-step">
+                  <time>随访复查</time>
+                  <p>监测 PSA、DRE、MRI/超声造影，必要时穿刺活检。</p>
+                </article>
+              </div>
+              <div class="sop-list">
+                <article class="sop-step searchable" data-text="SOP 作业指导 适应证 禁忌证 术前评估">
+                  <strong>01</strong>
+                  <div>
+                    <h3>患者选择与安全排查</h3>
+                    <p>确认是否属于低危或中危局限性前列腺癌等适用场景；同步排除严重心脏疾病、有源植入物、III 度房室传导阻滞、急性感染、癫痫病史及不能耐受麻醉手术等禁忌证。</p>
+                  </div>
+                </article>
+                <article class="sop-step searchable" data-text="SOP 作业指导 术前检查 PSA MRI 穿刺 病灶评估 转移评估">
+                  <strong>02</strong>
+                  <div>
+                    <h3>术前检查与病灶地图</h3>
+                    <p>完成血常规、尿常规、生化、凝血、PSA；建议经会阴系统穿刺 + 靶向穿刺、多参数 MRI；按需评估骨转移、淋巴结和其他脏器转移。</p>
+                  </div>
+                </article>
+                <article class="sop-step searchable" data-text="SOP 作业指导 麻醉 ASA 气管插管 肌松 设备 抢救车">
+                  <strong>03</strong>
+                  <div>
+                    <h3>团队、麻醉与设备准备</h3>
+                    <p>按 ASA 分级完成麻醉评估；建议气管插管全麻并使用肌松药；确认消融医师、护士、影像专家、设备人员、IRE 治疗仪、电极针、监护和抢救设备到位。</p>
+                  </div>
+                </article>
+                <article class="sop-step searchable" data-text="SOP 作业指导 定位 布针 肿瘤边缘 5-10 mm 针距 0.8-1.5 cm">
+                  <strong>04</strong>
+                  <div>
+                    <h3>定位、布针与参数确认</h3>
+                    <p>定位以穿刺病理位置信息为主，影像辅助。消融边界通常扩展至肿瘤边缘外 5-10 mm；两针间距建议 0.5-2.0 cm，常用记忆范围为 0.8-1.5 cm。</p>
+                  </div>
+                </article>
+                <article class="sop-step searchable" data-text="SOP 作业指导 消融 拔针 导尿管 碘伏 抗生素 性生活">
+                  <strong>05</strong>
+                  <div>
+                    <h3>消融后处理</h3>
+                    <p>消融结束后依次拔针并确认针头完整；会阴部按压，尿道冲洗后留置双腔导尿管，常规建议约 14 天；术后给予抗生素，1 个月内避免性生活。</p>
+                  </div>
+                </article>
+                <article class="sop-step searchable" data-text="SOP 作业指导 随访 PSA MRI 超声造影 穿刺活检 复发">
+                  <strong>06</strong>
+                  <div>
+                    <h3>随访、疗效与复发处理</h3>
+                    <p>术后 1 个月测 PSA 并做影像评估，之后每 3-6 个月随访；6 个月或 1 年可行穿刺活检评估疗效。PSA 持续升高、DRE 阳性或影像异常时，应穿刺活检明确是否复发。</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="tool-screen" id="tool-fit">
+              <div class="grid two">
+                <article class="card">
+                  <span class="tag strong">更适合重点记</span>
+                  <h3>低危或中危局限性前列腺癌</h3>
+                  <p>共识给出强推荐：PSA 小于 20 ng/mL，T1a 至 T2c，Gleason 评分不超过 7 分，影像学未见精囊/包膜侵犯、淋巴结、骨或其他脏器转移。</p>
+                </article>
+                <article class="card">
+                  <span class="tag warn">谨慎场景</span>
+                  <h3>挽救性或研究性使用</h3>
+                  <p>根治性放疗后局部复发可考虑挽救性 IRE；高危局限性、原发病灶进展的 CRPC、转移性前列腺癌原发灶减瘤，建议放在临床研究框架下。</p>
+                </article>
+                <article class="card">
+                  <span class="tag danger">先排除</span>
+                  <h3>禁忌证像“红灯”</h3>
+                  <p>严重心脏病或严重伴随疾病、不能耐受麻醉手术、体内有源植入物、III 度房室传导阻滞、急性感染或重度感染、癫痫病史。</p>
+                </article>
+                <article class="card">
+                  <span class="tag">一句话</span>
+                  <h3>先看病灶边界，再看身体能不能承受</h3>
+                  <p>IRE 的优势是“局部精准”，但前提是病灶范围清楚、患者安全边界清楚。</p>
+                </article>
+              </div>
+            </div>
+
+            <div class="tool-screen" id="tool-prep">
+              <div class="checklist" id="prepChecklist"></div>
+            </div>
+
+            <div class="tool-screen" id="tool-needle">
+              <div class="mini-diagram">
+                <div class="needle-map" aria-label="布针原则示意图">
+                  <div class="margin-zone"></div>
+                  <div class="lesion"></div>
+                  <span class="pin p1"></span>
+                  <span class="pin p2"></span>
+                  <span class="pin p3"></span>
+                  <span class="pin p4"></span>
+                </div>
+                <div class="card" style="box-shadow:none">
+                  <span class="tag">布针口诀</span>
+                  <h3>针要围住病灶，也要留出安全边界</h3>
+                  <p>整体消融边界通常扩展到肿瘤边缘外 5-10 mm。两针间距建议 0.5-2.0 cm，临床经验更常记 0.8-1.5 cm。纵轴上针体贯穿肿瘤，前后端露出肿瘤边缘均大于 0.5 cm，同时避免穿破前列腺包膜。</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-screen" id="tool-follow">
+              <div class="timeline" id="followTimeline"></div>
+            </div>
+
+            <div class="tool-screen" id="tool-effect">
+              <div class="route">
+                <div class="route-node">
+                  <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 3 5-7"></path></svg></span>
+                  <div><strong>PSA 先当“趋势雷达”</strong><br><span>术后 1、3、6 个月应明显下降，建议不高于 2.0 ng/mL；持续升高要进一步查。</span></div>
+                </div>
+                <div class="route-node">
+                  <span class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 12h8"></path><path d="M12 8v8"></path></svg></span>
+                  <div><strong>MRI 或超声造影看“有没有残留信号”</strong><br><span>完全坏死、无强化提示完全消融；局部强化提示可能残留。</span></div>
+                </div>
+                <div class="route-node">
+                  <span class="icon"><svg viewBox="0 0 24 24"><path d="M9 11 4 6"></path><path d="m4 6 2-2 5 5"></path><path d="M13 13l7 7"></path><path d="M14 7l3-3 3 3-3 3Z"></path></svg></span>
+                  <div><strong>可疑复发要用穿刺活检拍板</strong><br><span>PSA 持续升高、DRE 有结节或影像可疑时，必须行前列腺穿刺活检明确是否复发。</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-screen" id="tool-complication">
+              <div class="grid four">
+                <article class="card searchable" data-text="血尿 并发症 15 18">
+                  <span class="tag warn">15%-18%</span>
+                  <h3>血尿</h3>
+                  <p>共识引用研究提示，IRE 后可能出现血尿。学习时记住：这是常见观察项，术后管理要关注尿色和出血变化。</p>
+                </article>
+                <article class="card searchable" data-text="尿路感染 并发症 8 15 抗生素">
+                  <span class="tag warn">8%-15%</span>
+                  <h3>尿路感染</h3>
+                  <p>术后建议抗生素治疗以控制感染；复诊时也要留意发热、尿痛、尿频等提示。</p>
+                </article>
+                <article class="card searchable" data-text="排尿困难 并发症 4 15">
+                  <span class="tag warn">4%-15%</span>
+                  <h3>排尿困难</h3>
+                  <p>消融区域水肿、导尿管相关因素等都可能影响排尿。随访时不要只盯 PSA，也要问排尿体验。</p>
+                </article>
+                <article class="card searchable" data-text="尿潴留 并发症 6 22 导尿管">
+                  <span class="tag warn">6%-22%</span>
+                  <h3>尿潴留</h3>
+                  <p>共识建议根据消融范围和部位决定导尿管留置时间，常规建议约 14 天。</p>
+                </article>
+              </div>
+              <div class="notice" style="margin-top:14px;background:#f8fbfa;border:1px solid var(--line)">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                <div>记忆重点：与根治性切除术相比，IRE 局灶治疗的尿失禁和勃起功能障碍发生率较低；最新研究中尿失禁约 3%。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="learning-section" id="terms" data-module="knowledge" data-title="知识补充 术语速查 PSA Gleason MRI PSMA-PET 穿刺活检 完全消融 不完全消融">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">知识补充</p>
+              <h2>术语速查</h2>
+              <p class="section-copy">不是降低严谨性，而是先把意思讲明白。</p>
+            </div>
+          </div>
+          <div class="terms" id="termsList"></div>
+        </section>
+
+        <section class="learning-section module-shell" id="meds" data-module="meds" data-title="用药模块 围手术期 前列腺增生 BPH IRE α1受体阻滞剂 5α还原酶抑制剂 抗生素 NSAIDs">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">用药模块</p>
+              <h2>围手术期用药速查</h2>
+              <p class="section-copy">根据“国际培训班问题总结”整理，重点覆盖前列腺增生/BPH 场景下 IRE 围手术期用药思路。</p>
+            </div>
+          </div>
+          <div class="med-note searchable" data-text="用药 安全提示 培训总结 医嘱 抗生素 差异">
+            <strong>安全提示：</strong>本模块用于培训学习，不构成处方。附件中“现场答复”和“文献整理”对抗生素是否常规使用存在差异：现场答复提到“目前不需要”，文献整理中列为预防性用药。实际用药应结合医院制度、感染风险、尿培养/药敏、过敏史、肾功能和主管医生医嘱。
+          </div>
+          <div class="care-timeline searchable" data-text="用药时间线 术前2周 术前1天 术后3-5天 术后1-2周 术后1-3个月 术后3-6个月 激素">
+            <article class="timeline-step">
+              <time>术前 ≥2 周</time>
+              <p>附件整理：α₁受体阻滞剂可启动；5α-还原酶抑制剂常用，用于改善排尿、减少血尿风险。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术前 1 天/术前 30 min</time>
+              <p>预防性抗生素需按本院规范判断；NSAIDs 可用于减轻炎症和疼痛风险。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术后 3-5 天</time>
+              <p>抗生素是否使用依感染风险和医院流程；关注尿路感染、发热、尿痛等提示。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术后 1-2 周</time>
+              <p>NSAIDs 按需用于会阴痛、尿痛、下腹坠胀和炎症水肿。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术后 2-4 周</time>
+              <p>尿频尿急明显时，可评估 M 受体阻滞剂或 β₃激动剂。</p>
+            </article>
+            <article class="timeline-step">
+              <time>术后 1-6 个月</time>
+              <p>α₁受体阻滞剂可至 1-3 个月；5α-还原酶抑制剂可至 3-6 个月。激素仅特殊水肿短期酌情。</p>
+            </article>
+          </div>
+          <div class="med-grid">
+            <article class="med-card searchable" data-text="α1受体阻滞剂 坦索罗辛 多沙唑嗪 特拉唑嗪 术前 2周 术后 1-3个月 排尿困难 尿潴留">
+              <span class="tag strong">核心常用</span>
+              <h3>α₁受体阻滞剂</h3>
+              <p>用于松弛前列腺尿道平滑肌，改善排尿困难，降低尿潴留风险。</p>
+              <dl>
+                <div><dt>代表药物</dt><dd>坦索罗辛、多沙唑嗪、特拉唑嗪。</dd></div>
+                <div><dt>附件用法</dt><dd>坦索罗辛 0.2 mg qd，术前 2 周起至术后 1-3 个月。</dd></div>
+              </dl>
+            </article>
+            <article class="med-card searchable" data-text="5α还原酶抑制剂 非那雄胺 度他雄胺 DHT 前列腺体积 血尿 复发 术前 2周 术后 3-6个月">
+              <span class="tag strong">常用联合</span>
+              <h3>5α-还原酶抑制剂</h3>
+              <p>抑制睾酮转化为 DHT，帮助缩小腺体、减少血尿风险，并抑制残留腺体增生。</p>
+              <dl>
+                <div><dt>代表药物</dt><dd>非那雄胺 5 mg qd，度他雄胺 0.5 mg qd。</dd></div>
+                <div><dt>附件用法</dt><dd>术前 2 周起，术后持续 3-6 个月。</dd></div>
+              </dl>
+            </article>
+            <article class="med-card searchable" data-text="抗生素 左氧氟沙星 头孢 二代 三代 尿路感染 败血症 术前 1天 术前30min 术后3-5天">
+              <span class="tag warn">需按规范</span>
+              <h3>预防性抗生素</h3>
+              <p>文献整理将其用于预防尿路感染、穿刺/尿道相关感染；但附件现场答复提到目前不需要，需按本院流程判断。</p>
+              <dl>
+                <div><dt>代表药物</dt><dd>左氧氟沙星、二代/三代头孢等。</dd></div>
+                <div><dt>附件用法</dt><dd>左氧氟沙星 0.5 g po qd，术前 1 天 + 术后 3-5 天。</dd></div>
+              </dl>
+            </article>
+            <article class="med-card searchable" data-text="NSAIDs 非甾体抗炎药 塞来昔布 布洛芬 疼痛 炎症 水肿 术前 1天 术后 1-2周">
+              <span class="tag">按需镇痛</span>
+              <h3>NSAIDs 止痛/抗炎</h3>
+              <p>用于减轻会阴部疼痛、尿痛、下腹坠胀和炎症水肿，减少阿片类镇痛药需求。</p>
+              <dl>
+                <div><dt>代表药物</dt><dd>塞来昔布、布洛芬。</dd></div>
+                <div><dt>附件时机</dt><dd>术前 1 天；术后 1-2 周按需使用。</dd></div>
+              </dl>
+            </article>
+            <article class="med-card searchable" data-text="M受体阻滞剂 β3激动剂 索利那新 米拉贝隆 尿频 尿急 夜尿 术后2-4周">
+              <span class="tag">症状处理</span>
+              <h3>M 受体阻滞剂 / β₃激动剂</h3>
+              <p>用于术后尿频、尿急、夜尿明显时，帮助抑制膀胱过度活动。</p>
+              <dl>
+                <div><dt>代表药物</dt><dd>索利那新、米拉贝隆。</dd></div>
+                <div><dt>附件时机</dt><dd>术后 2-4 周，按症状选择。</dd></div>
+              </dl>
+            </article>
+            <article class="med-card searchable" data-text="激素 糖皮质激素 地塞米松 甲泼尼龙 雄激素 雌激素 禁用 水肿 排尿困难 ADT">
+              <span class="tag danger">非常规</span>
+              <h3>激素类药物</h3>
+              <p>糖皮质激素不常规使用，仅严重炎症/水肿或特殊高危病例短期酌情。雄激素/雌激素在 BPH 场景禁用。</p>
+              <dl>
+                <div><dt>特殊情况</dt><dd>严重尿道水肿/排尿困难可短期小剂量地塞米松 5 mg iv qd，约 3-5 天。</dd></div>
+                <div><dt>前列腺癌病史</dt><dd>禁用雄激素；若 PSA 持续升高，按前列腺癌指南评估 ADT，而非 BPH 常规用药。</dd></div>
+              </dl>
+            </article>
+          </div>
+        </section>
+
+        <section class="learning-section module-shell" id="quiz" data-module="quiz" data-title="考试题库 掌握度 单选 多选 判断 排序 填空 病例题">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">考试题库</p>
+              <h2>用于培训、复习和自测的题库</h2>
+              <p class="section-copy">包含单选、多选、判断、排序、填空和病例题。答错会显示解析，方便回到知识库复习。</p>
+            </div>
+          </div>
+          <div class="care-timeline compact searchable" data-text="考试题库 时间线 学习路径 基础题 进阶题 病例题 错题复习">
+            <article class="timeline-step">
+              <time>先看知识库</time>
+              <p>先掌握入排标准、手术方式、随访和并发症。</p>
+            </article>
+            <article class="timeline-step">
+              <time>再看用药/SOP</time>
+              <p>用时间线理解术前、术中、术后各阶段任务。</p>
+            </article>
+            <article class="timeline-step">
+              <time>基础题</time>
+              <p>先做单选、判断，检查关键概念是否记牢。</p>
+            </article>
+            <article class="timeline-step">
+              <time>进阶题</time>
+              <p>再做多选、排序和填空，训练细节掌握。</p>
+            </article>
+            <article class="timeline-step">
+              <time>病例题</time>
+              <p>把知识放进真实场景，练习判断下一步。</p>
+            </article>
+            <article class="timeline-step">
+              <time>错题回看</time>
+              <p>根据解析回到对应模块复习，不追求一次全对。</p>
+            </article>
+          </div>
+          <div class="quiz-panel">
+            <p class="quiz-question" id="quizQuestion"></p>
+            <div class="answers" id="answers"></div>
+            <div class="quiz-feedback" id="quizFeedback">请选择一个答案。</div>
+            <div class="quiz-controls">
+              <button class="ghost-btn" id="prevQuestion" type="button">上一题</button>
+              <button class="primary-btn" id="nextQuestion" type="button">下一题</button>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span><div><strong id="rightCount">0</strong><span>答对题数</span></div></div>
+            <div class="stat"><span class="icon"><svg viewBox="0 0 24 24"><path d="M12 20v-6"></path><path d="M6 20V10"></path><path d="M18 20V4"></path></svg></span><div><strong id="quizScore">0%</strong><span>当前正确率</span></div></div>
+            <div class="stat"><span class="icon"><svg viewBox="0 0 24 24"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"></path></svg></span><div><strong id="favCount">0</strong><span>收藏重点</span></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="bottom-nav" aria-label="移动端导航">
+      <a href="#home" data-nav="home"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg></span>首页</a>
+      <a href="#quick" data-nav="quick"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19V5"></path><path d="M8 7h12"></path><path d="M8 12h12"></path><path d="M8 17h8"></path></svg></span>知识库</a>
+      <a href="#meds" data-nav="meds"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M10 21h4"></path><path d="M8 21h8"></path><path d="M12 3v7"></path><path d="M8 7h8"></path><path d="M7 10h10l-1 11H8Z"></path></svg></span>用药</a>
+      <a href="#tools" data-nav="tools"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1a6 6 0 0 1-7.9 7.9L7 20l-3-3 5.9-5.9a6 6 0 0 1 7.9-7.9l-3.1 3.1Z"></path></svg></span>SOP</a>
+      <a href="#quiz" data-nav="quiz"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 11h6"></path><path d="M9 15h3"></path><path d="M5 4h14v16H5z"></path></svg></span>题库</a>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const icons = {
+      star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9L12 3Z"></path></svg>'
+    };
+
+    const appState = {
+      favorites: new Set(JSON.parse(localStorage.getItem("ireFavorites") || "[]")),
+      checked: new Set(JSON.parse(localStorage.getItem("ireChecked") || "[]")),
+      quizAnswers: JSON.parse(localStorage.getItem("ireQuizAnswers") || "{}"),
+      quizIndex: Number(localStorage.getItem("ireQuizIndex") || 0),
+      seenSections: new Set(JSON.parse(localStorage.getItem("ireSeenSections") || "[]"))
+    };
+
+    const recommendations = [
+      { id: "rec1", tag: "一般推荐", tone: "", title: "放疗后局部复发，可考虑挽救性 IRE", body: "先完成恰当诊断评估，再讨论是否用 IRE 做局部挽救治疗。人话说：不是一复发就做，先把复发范围弄清楚。" },
+      { id: "rec2", tag: "一般推荐", tone: "warn", title: "高危/CRPC/转移性原发灶，建议放在临床研究中", body: "这些场景更复杂，共识倾向在充分知情和研究框架下开展减瘤性 IRE。" },
+      { id: "rec3", tag: "强推荐", tone: "strong", title: "低危或中危局限性前列腺癌，可选择 IRE", body: "这是最核心的适用人群：病灶相对局限，治疗目标是控制局部肿瘤，同时尽量保留功能。" },
+      { id: "rec4", tag: "强推荐", tone: "strong", title: "术后 PSA 要持续监测", body: "PSA 像一条趋势线，用来观察消融效果和疾病进展。术后 1、3、6 个月应明显降低，建议不高于 2.0 ng/mL。" },
+      { id: "rec5", tag: "强推荐", tone: "strong", title: "MRI 或超声造影可常规评估疗效", body: "影像学负责回答：病灶有没有被充分处理？增强 MRI 无强化更支持完全消融。" },
+      { id: "rec6", tag: "一般推荐", tone: "", title: "PSA 持续升高或骨痛，再考虑骨扫描/PSMA-PET 等", body: "骨扫描和其他影像学不作为常规随访项目，但出现警讯时要用来查复发或转移。" },
+      { id: "rec7", tag: "强推荐", tone: "strong", title: "PSA 持续升高或影像异常，建议穿刺活检确认", body: "可疑不等于确诊。前列腺穿刺活检是明确是否复发的重要依据。" }
+    ];
+
+    const storySteps = [
+      { title: "发现局限性前列腺癌", body: "先确认风险分层和病灶范围。IRE 最典型的学习入口，是低危或中危局限性前列腺癌。" },
+      { title: "判断能不能做 IRE", body: "看适应证，也看禁忌证。病灶适合只是第一步，麻醉和心脏等安全条件也要过关。" },
+      { title: "术前检查把地图画清楚", body: "常规实验室检查、PSA、穿刺活检、多参数 MRI，以及必要时评估转移病灶。" },
+      { title: "定位和布针像做精准地图导航", body: "以穿刺病理位置信息为主，MRI、超声造影或 PSMA-PET 辅助。若影像和病理不一致，共识强调以病理为准。" },
+      { title: "电脉冲完成局部消融", body: "电极针两两组合形成电场，设备根据针规格和针间距生成参数，消融时实时观察脉冲参数。" },
+      { title: "术后随访看趋势和图像", body: "1 个月测 PSA 并做影像评估；之后每 3-6 个月随访，术后 3 年每年随访一次。" },
+      { title: "如果复发，先证实再选择下一步", body: "穿刺证实复发且仍符合低危/中危局限性特征，可再次 IRE；也可选择根治术或放疗。" }
+    ];
+
+    const prepItems = [
+      { id: "prep1", title: "全麻术前常规检查", body: "血常规、尿常规、生化、凝血功能、血清 PSA 等。" },
+      { id: "prep2", title: "原发病灶评估", body: "建议经会阴系统穿刺 + 靶向穿刺，并进行前列腺多参数 MRI。" },
+      { id: "prep3", title: "转移病灶评估", body: "全身骨扫描，PSMA-PET-CT 或 PSMA-PET-MRI，明确病变范围和转移情况。" },
+      { id: "prep4", title: "团队与设备", body: "消融医师、护士、影像专家、设备技术人员；准备 IRE 设备、电极针、麻醉和抢救设备。" },
+      { id: "prep5", title: "药物准备", body: "肌松药、肌松拮抗药、常用急救药物等。" },
+      { id: "prep6", title: "可选检查", body: "常规影像未见转移时可选 PSMA-PET；也可选前列腺超声造影、全身 MRI。" }
+    ];
+
+    const followTimeline = [
+      { time: "术后 1 个月", body: "测 PSA，并进行影像学检查，初步评估治疗效果。" },
+      { time: "术后每 3-6 个月", body: "随访 PSA、DRE、MRI 或超声造影、PHI 等。" },
+      { time: "术后 6 个月或 1 年", body: "推荐穿刺活检作为常规疗效评估手段，结合患者依从性决定时间点。" },
+      { time: "术后 3 年后", body: "每年随访 1 次；MRI 是主要影像随访方式。" }
+    ];
+
+    const terms = [
+      { title: "PSA", body: "前列腺特异性抗原。可以把它看成一条“趋势提醒线”，术后如果不降反升，需要提高警惕。" },
+      { title: "Gleason 评分", body: "病理医生根据癌细胞长相给出的恶性程度评分。共识里的 IRE 适应证重点是评分不超过 7 分。" },
+      { title: "MRI", body: "磁共振检查。它像一张软组织地图，帮助看病灶位置、范围，以及消融后是否还有强化信号。" },
+      { title: "PSMA-PET", body: "更敏感地寻找前列腺癌相关病灶的影像检查，适合在需要明确复发或转移时使用。" },
+      { title: "穿刺活检", body: "取一点组织做病理检查。影像可疑或 PSA 异常时，它负责把“怀疑”变成更明确的判断。" },
+      { title: "完全消融", body: "增强 MRI 显示肿瘤完全坏死、无强化。简单说，就是影像上看不到残留活性信号。" },
+      { title: "不完全消融", body: "消融区域局部仍有强化，提示可能有肿瘤残留，需要结合 PSA、影像和活检继续判断。" },
+      { title: "局灶治疗", body: "重点处理肿瘤和周边目标范围，尽量减少对尿道、括约肌、神经血管束等结构的损伤。" }
+    ];
+
+    const quiz = [
+      {
+        q: "共识中最核心、最明确推荐的 IRE 适用人群是哪类？",
+        options: ["低危或中危局限性前列腺癌", "所有转移性前列腺癌", "所有放疗后 PSA 升高患者", "任何不能手术的患者"],
+        answer: 0,
+        explain: "强推荐指向低危或中危局限性前列腺癌。复杂场景需要更谨慎。"
+      },
+      {
+        q: "下列哪项属于 IRE 手术禁忌证？",
+        options: ["PSA 小于 20 ng/mL", "体内携带心脏起搏器等有源植入物", "T1a 至 T2c", "Gleason 评分不超过 7 分"],
+        answer: 1,
+        explain: "有源植入物、III 度房室传导阻滞、严重心脏病、急性感染、癫痫病史等都是红灯。"
+      },
+      {
+        q: "如果术后 PSA 持续升高或影像学检查异常，共识建议下一步重点是什么？",
+        options: ["立即停止所有随访", "只观察，不再检查", "行前列腺穿刺活检明确是否复发", "常规每周骨扫描"],
+        answer: 2,
+        explain: "可疑复发时，穿刺活检用于明确肿瘤是否复发。"
+      },
+      {
+        q: "布针时，整体消融边界通常应扩展到肿瘤边缘外多少？",
+        options: ["1-2 mm", "5-10 mm", "3-4 cm", "不需要边界"],
+        answer: 1,
+        explain: "共识写到整体消融边界扩展至肿瘤边缘 5-10 mm。"
+      },
+      {
+        q: "术后影像评估中，增强 MRI 显示消融区无强化，通常提示什么？",
+        options: ["完全消融", "必然远处转移", "不能评价", "一定感染"],
+        answer: 0,
+        explain: "肿瘤完全坏死、无强化，提示完全消融；局部强化提示可能残留。"
+      },
+      {
+        q: "术后骨扫描和 PSMA-PET 在共识中的定位更接近哪一种？",
+        options: ["所有患者每次随访都必须做", "PSA 持续升高或骨痛等警讯出现时考虑", "完全没有价值", "只用于术前麻醉评估"],
+        answer: 1,
+        explain: "它们不作为常规随访项目，但在 PSA 持续升高或骨痛时有助于明确复发和转移情况。"
+      },
+      {
+        q: "IRE 治疗前，影像和穿刺病理结果不一致时，共识更强调以什么为准？",
+        options: ["穿刺病理结果", "患者自己的感觉", "只看超声图像", "只看 PSA 数值"],
+        answer: 0,
+        explain: "肿瘤位置和范围主要依据带位置信息的经会阴靶向联合系统穿刺病理结果，影像起辅助作用。"
+      },
+      {
+        q: "IRE 术前常规实验室检查中，哪一项属于共识提到的必选内容？",
+        options: ["血常规、尿常规、凝血功能和 PSA 等", "每天一次 PSMA-PET", "常规脑电图", "所有患者基因测序"],
+        answer: 0,
+        explain: "术前必选检查包括全麻术前常规实验室检查，如血常规、尿常规、生化、凝血、血清 PSA 等。"
+      },
+      {
+        q: "关于麻醉准备，下列哪种说法更符合共识？",
+        options: ["建议气管插管全身麻醉，术中给予肌松药", "所有患者都只需局部麻醉", "不需要 ASA 分级评估", "术中不需要心电监护"],
+        answer: 0,
+        explain: "共识建议参照 ASA 分级做麻醉前评估，通常建议气管插管全身麻醉，并配合肌松药。"
+      },
+      {
+        q: "术后常规建议留置导尿管大约多久？",
+        options: ["14 天", "1 小时", "半年", "不允许留置导尿管"],
+        answer: 0,
+        explain: "共识写到根据消融范围和部位决定 1-21 天，常规建议留置 14 天。"
+      },
+      {
+        q: "术后 1 个月内，共识提醒患者应避免什么？",
+        options: ["性生活", "喝水", "复诊", "记录排尿情况"],
+        answer: 0,
+        explain: "共识提到术后 1 个月内禁止性生活，并嘱患者定期复诊复查。"
+      },
+      {
+        q: "术后 6 个月或 1 年推荐做穿刺活检，主要目的是什么？",
+        options: ["评估疗效，查看消融区内外是否仍有肿瘤细胞", "替代所有影像检查", "判断是否需要麻醉", "测量身高体重"],
+        answer: 0,
+        explain: "穿刺活检可分析消融区域内外组织中有无肿瘤细胞，是疗效评价的重要病理依据。"
+      },
+      {
+        q: "IRE 后如果穿刺证实复发，且仍符合低危或中危局限性特征，可以考虑什么？",
+        options: ["再次 IRE 消融局灶治疗", "永远不再治疗", "只做感冒治疗", "立即停止所有检查"],
+        answer: 0,
+        explain: "共识提到这类患者可再次行 IRE，也可根据情况选择根治性切除手术或放射治疗。"
+      },
+      {
+        q: "下列哪项是共识中提到的 IRE 可能并发症？",
+        options: ["血尿、尿路感染、排尿困难或尿潴留", "近视", "牙痛", "听力下降"],
+        answer: 0,
+        explain: "共识引用研究显示，IRE 后可能出现血尿、尿路感染、排尿困难、尿潴留等。"
+      },
+      {
+        q: "共识中提到，最新研究里 IRE 后尿失禁发生率大约是多少？",
+        options: ["3%", "50%", "80%", "100%"],
+        answer: 0,
+        explain: "共识提到最新研究显示尿失禁发生率较低，仅为 3%。"
+      },
+      {
+        q: "高危局限性前列腺癌或转移性前列腺癌原发灶减瘤性 IRE，更适合怎样开展？",
+        options: ["充分知情后以临床研究形式开展", "作为所有患者的常规首选", "不需要任何评估", "只看患者年龄决定"],
+        answer: 0,
+        explain: "这些场景证据和风险更复杂，共识建议在充分知情情况下，以临床研究形式开展。"
+      },
+      {
+        q: "术后随访中，如果出现骨痛，即使 PSA 不高，共识建议怎样处理？",
+        options: ["行骨扫描等影像学检查", "完全不用管", "只做尿常规", "直接判定完全治愈"],
+        answer: 0,
+        explain: "共识提示如出现骨痛，无论 PSA 水平如何，均应行骨扫描等影像学检查。"
+      }
+    ];
+
+    quiz.push(
+      {
+        type: "multi",
+        level: "进阶多选",
+        q: "判断“低危或中危局限性前列腺癌可选择 IRE”时，哪些条件更接近共识中的适应证描述？",
+        options: ["PSA < 20 ng/mL", "T1a 至 T2c", "Gleason 评分 <= 7 分", "已有明确骨转移", "影像学提示无精囊和包膜侵犯"],
+        answer: [0, 1, 2, 4],
+        explain: "共识适应证包括 PSA < 20 ng/mL、T1a 至 T2c、Gleason <= 7 分，且影像学无精囊/包膜侵犯、无淋巴结、骨或其他脏器转移。"
+      },
+      {
+        type: "multi",
+        level: "进阶多选",
+        q: "下列哪些情况属于 IRE 手术前需要重点排除的禁忌证？",
+        options: ["体内携带心脏起搏器等有源植入物", "III 度房室传导阻滞", "急性感染期或重度感染", "Gleason 评分 6 分", "癫痫病史"],
+        answer: [0, 1, 2, 4],
+        explain: "禁忌证包括严重心脏疾病或不能耐受麻醉手术、有源植入物、III 度房室传导阻滞、急性或重度感染、癫痫病史等。"
+      },
+      {
+        type: "judge",
+        level: "判断题",
+        q: "如果超声或 MRI 与穿刺病理定位不一致，共识更倾向以穿刺病理结果为准。",
+        options: ["正确", "错误"],
+        answer: 0,
+        explain: "正确。共识强调肿瘤位置和范围主要依据经会阴靶向联合系统穿刺病理结果，影像学检查起辅助作用。"
+      },
+      {
+        type: "judge",
+        level: "判断题",
+        q: "骨扫描和 PSMA-PET 是 IRE 术后每一次常规随访都必须做的项目。",
+        options: ["正确", "错误"],
+        answer: 1,
+        explain: "错误。骨扫描和其他影像学检查不作为常规随访手段；PSA 持续升高或骨痛等警讯出现时再考虑。"
+      },
+      {
+        type: "text",
+        level: "填空题",
+        q: "术后 1、3、6 个月 PSA 应显著降低。共识建议 PSA 最好不高于多少 ng/mL？",
+        keywords: ["2.0", "2"],
+        answerText: "2.0 ng/mL",
+        explain: "共识建议术后 1、3、6 个月 PSA 水平应显著降低，建议应 <= 2.0 ng/mL。"
+      },
+      {
+        type: "text",
+        level: "填空题",
+        q: "布针时，临床经验建议最适合的两针间距是多少 cm？",
+        keywords: ["0.8", "1.5", "0.8-1.5", "0.8～1.5"],
+        answerText: "0.8-1.5 cm",
+        explain: "共识写到两针间距建议 0.5-2.0 cm，临床经验建议最适合的两针间距为 0.8-1.5 cm。"
+      },
+      {
+        type: "order",
+        level: "排序题",
+        q: "把 IRE 学习路径按更合理的临床顺序排列。",
+        options: ["术后随访和疗效评价", "判断适应证与禁忌证", "术前检查和病灶评估", "定位、布针并消融"],
+        answer: [1, 2, 3, 0],
+        explain: "合理顺序是：先判断能不能做，再完成术前评估，然后定位布针消融，最后进入随访和疗效评价。"
+      },
+      {
+        type: "order",
+        level: "排序题",
+        q: "出现疑似复发时，把处理路径排成更合理的顺序。",
+        options: ["选择再次 IRE、根治术或放疗等后续方案", "发现 PSA 持续升高或影像异常", "前列腺穿刺活检确认是否复发", "结合风险分层判断是否仍为低/中危局限性特征"],
+        answer: [1, 2, 3, 0],
+        explain: "疑似复发时先发现警讯，再用穿刺活检确认，随后结合病情特征选择再次 IRE 或其他治疗。"
+      },
+      {
+        type: "multi",
+        level: "病例多选",
+        q: "病例：患者为低危局限性前列腺癌，拟行 IRE。术前准备中哪些项目更符合共识？",
+        options: ["血常规、尿常规、生化、凝血和 PSA", "前列腺多参数 MRI", "经会阴系统穿刺 + 靶向穿刺", "不需要麻醉前评估", "准备电除颤仪、心电监护和抢救车等"],
+        answer: [0, 1, 2, 4],
+        explain: "术前准备既包括实验室和病灶评估，也包括麻醉、监护、抢救设备及相关人员准备。"
+      },
+      {
+        type: "multi",
+        level: "病例多选",
+        q: "病例：术后随访中 PSA 持续升高，并且 MRI 提示可疑强化。下一步哪些做法更合理？",
+        options: ["完善影像学评估", "行前列腺穿刺活检明确是否复发", "直接判定完全消融", "如证实复发再讨论再次 IRE、根治术或放疗", "停止随访"],
+        answer: [0, 1, 3],
+        explain: "PSA 持续升高或影像异常时，应进一步评估并用穿刺活检明确是否复发，再选择后续处理。"
+      },
+      {
+        type: "text",
+        level: "简答题",
+        q: "请写出 IRE 术后随访中最重要的 2 类观察工具或检查线索。",
+        keywords: ["PSA", "MRI", "超声造影", "DRE", "穿刺", "活检"],
+        minHits: 2,
+        answerText: "例如：PSA + MRI/超声造影；可疑时加穿刺活检。",
+        explain: "共识随访重点包括 PSA、DRE、MRI 或超声造影、PHI，必要时行穿刺活检、骨扫描或 PSMA-PET。"
+      },
+      {
+        type: "text",
+        level: "简答题",
+        q: "请写出 IRE 术后常见并发症中的任意 2 项。",
+        keywords: ["血尿", "尿路感染", "排尿困难", "尿潴留", "尿失禁", "勃起功能障碍"],
+        minHits: 2,
+        answerText: "例如：血尿、尿路感染、排尿困难、尿潴留。",
+        explain: "共识提到可能并发症包括血尿、尿路感染、排尿困难、尿潴留等；尿失禁和勃起功能障碍发生率相对较低。"
+      },
+      {
+        type: "judge",
+        level: "用药判断",
+        q: "附件整理中，α₁受体阻滞剂可从术前约 2 周开始，并持续到术后 1-3 个月。",
+        options: ["正确", "错误"],
+        answer: 0,
+        explain: "正确。附件以坦索罗辛 0.2 mg qd 为例，写到术前 2 周起至术后 1-3 个月。"
+      },
+      {
+        type: "multi",
+        level: "用药多选",
+        q: "附件中提到的 5α-还原酶抑制剂相关说法，哪些是正确的？",
+        options: ["代表药物包括非那雄胺、度他雄胺", "可用于抑制 DHT", "可帮助减少术后血尿风险", "属于必须长期大剂量糖皮质激素", "附件整理中可持续至术后 3-6 个月"],
+        answer: [0, 1, 2, 4],
+        explain: "5α-还原酶抑制剂是激素调控类药物，但不是传统糖皮质激素；附件提到术前 2 周起，术后 3-6 个月。"
+      },
+      {
+        type: "single",
+        level: "用药单选",
+        q: "术后尿频、尿急、夜尿明显时，附件提到可考虑哪类药物？",
+        options: ["M 受体阻滞剂 / β₃激动剂", "雄激素", "长期大剂量糖皮质激素", "抗结核药"],
+        answer: 0,
+        explain: "附件提到索利那新、米拉贝隆可用于术后 2-4 周尿频尿急明显时。"
+      },
+      {
+        type: "single",
+        level: "用药安全",
+        q: "关于抗生素，附件内容最需要注意哪一点？",
+        options: ["现场答复和文献整理存在差异，实际应按本院规范和医嘱", "所有患者必须终身使用", "所有患者都绝对禁用", "只要使用抗生素就不需要无菌操作"],
+        answer: 0,
+        explain: "附件现场答复提到目前不需要，但文献整理列为预防性用药，因此模块中保留差异提示。"
+      },
+      {
+        type: "judge",
+        level: "用药判断",
+        q: "附件整理认为糖皮质激素应作为 BPH-IRE 围手术期常规长期用药。",
+        options: ["正确", "错误"],
+        answer: 1,
+        explain: "错误。附件整理认为糖皮质激素不常规使用，仅严重炎症/水肿或特殊高危病例短期酌情。"
+      }
+    );
+
+    const sectionIds = ["home", "quick", "meds", "tools", "quiz"];
+
+    function saveState() {
+      localStorage.setItem("ireFavorites", JSON.stringify([...appState.favorites]));
+      localStorage.setItem("ireChecked", JSON.stringify([...appState.checked]));
+      localStorage.setItem("ireQuizAnswers", JSON.stringify(appState.quizAnswers));
+      localStorage.setItem("ireQuizIndex", String(appState.quizIndex));
+      localStorage.setItem("ireSeenSections", JSON.stringify([...appState.seenSections]));
+    }
+
+    function toast(message) {
+      const node = document.getElementById("toast");
+      node.textContent = message;
+      node.classList.add("show");
+      window.clearTimeout(toast.timer);
+      toast.timer = window.setTimeout(() => node.classList.remove("show"), 2400);
+    }
+
+    function renderRecommendations() {
+      const wrap = document.getElementById("recommendations");
+      wrap.innerHTML = recommendations.map(item => `
+        <article class="card searchable" data-text="${item.title} ${item.body} ${item.tag}">
+          <button class="favorite ${appState.favorites.has(item.id) ? "active" : ""}" type="button" data-fav="${item.id}" aria-label="收藏 ${item.title}">${icons.star}</button>
+          <span class="tag ${item.tone}">${item.tag}</span>
+          <h3>${item.title}</h3>
+          <p>${item.body}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderStory() {
+      const wrap = document.getElementById("storyline");
+      wrap.innerHTML = storySteps.map(step => `
+        <article class="story-step searchable" data-text="${step.title} ${step.body}">
+          <div>
+            <h3>${step.title}</h3>
+            <p>${step.body}</p>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderPrep() {
+      const wrap = document.getElementById("prepChecklist");
+      wrap.innerHTML = prepItems.map(item => `
+        <label class="check-item searchable" data-text="${item.title} ${item.body}">
+          <input type="checkbox" data-check="${item.id}" ${appState.checked.has(item.id) ? "checked" : ""}>
+          <span><strong>${item.title}</strong><br>${item.body}</span>
+        </label>
+      `).join("");
+    }
+
+    function renderTimeline() {
+      const wrap = document.getElementById("followTimeline");
+      wrap.innerHTML = followTimeline.map(item => `
+        <article class="time-card searchable" data-text="${item.time} ${item.body}">
+          <strong>${item.time}</strong>
+          <span>${item.body}</span>
+        </article>
+      `).join("");
+    }
+
+    function renderTerms() {
+      const wrap = document.getElementById("termsList");
+      wrap.innerHTML = terms.map(item => `
+        <details class="term searchable" data-text="${item.title} ${item.body}">
+          <summary>${item.title}</summary>
+          <p>${item.body}</p>
+        </details>
+      `).join("");
+    }
+
+    function getQuizEntry(index = appState.quizIndex) {
+      const raw = appState.quizAnswers[index];
+      if (raw && typeof raw === "object" && "value" in raw) return raw;
+      if (raw !== undefined) return { value: raw, submitted: true };
+      return { value: undefined, submitted: false };
+    }
+
+    function setQuizEntry(value, submitted = true) {
+      appState.quizAnswers[appState.quizIndex] = { value, submitted };
+      saveState();
+    }
+
+    function arraysEqual(a, b) {
+      return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((value, index) => value === b[index]);
+    }
+
+    function sortedArraysEqual(a, b) {
+      if (!Array.isArray(a) || !Array.isArray(b)) return false;
+      return arraysEqual([...a].sort((x, y) => x - y), [...b].sort((x, y) => x - y));
+    }
+
+    function textMatches(item, value) {
+      const text = String(value || "").trim().toLowerCase();
+      if (!text) return false;
+      const hits = (item.keywords || []).filter(keyword => text.includes(String(keyword).toLowerCase())).length;
+      return hits >= (item.minHits || 1);
+    }
+
+    function isQuizCorrect(item, entry) {
+      if (!entry.submitted) return false;
+      const type = item.type || "single";
+      if (type === "multi") return sortedArraysEqual(entry.value, item.answer);
+      if (type === "order") return arraysEqual(entry.value, item.answer);
+      if (type === "text") return textMatches(item, entry.value);
+      return Number(entry.value) === item.answer;
+    }
+
+    function answerLabel(item, value) {
+      if (value === undefined || value === "") return "未作答";
+      const type = item.type || "single";
+      if (type === "text") return value;
+      if (Array.isArray(value)) return value.map(index => item.options[index]).join(" → ");
+      return item.options?.[Number(value)] ?? value;
+    }
+
+    function renderQuiz() {
+      const item = quiz[appState.quizIndex];
+      const type = item.type || "single";
+      const entry = getQuizEntry();
+      const answered = entry.value !== undefined && entry.value !== "";
+      const submitted = Boolean(entry.submitted);
+      const correct = isQuizCorrect(item, entry);
+      document.getElementById("quizQuestion").innerHTML = `<span class="quiz-meta"><span>${item.level || (type === "single" ? "单选题" : "练习题")}</span></span>${appState.quizIndex + 1}. ${item.q}`;
+
+      let html = "";
+      if (type === "text") {
+        html = `
+          <input class="text-answer" id="textAnswer" type="text" value="${entry.value || ""}" placeholder="输入关键词或简短答案">
+          <button class="primary-btn" type="button" data-submit-text>提交答案</button>
+        `;
+      } else if (type === "order") {
+        const picked = Array.isArray(entry.value) ? entry.value : [];
+        html = `
+          <div class="order-picked">当前顺序：${picked.length ? picked.map((index, order) => `${order + 1}. ${item.options[index]}`).join("　") : "点击下方选项开始排序"}</div>
+          ${item.options.map((text, index) => {
+            const used = picked.includes(index);
+            let cls = used ? "selected" : "";
+            if (submitted) {
+              if (item.answer.includes(index)) cls += " correct";
+              if (used && picked[item.answer.indexOf(index)] !== index) cls += " wrong";
+            }
+            return `<button class="answer ${cls}" type="button" data-order="${index}" ${used || submitted ? "disabled" : ""}>${text}</button>`;
+          }).join("")}
+          <div class="quiz-controls">
+            <button class="ghost-btn" type="button" data-clear-order>清空排序</button>
+            <button class="primary-btn" type="button" data-submit-order>提交排序</button>
+          </div>
+        `;
+      } else if (type === "multi") {
+        const picked = Array.isArray(entry.value) ? entry.value : [];
+        html = item.options.map((text, index) => {
+          const selected = picked.includes(index);
+          let cls = selected ? "selected" : "";
+          if (submitted) {
+            if (item.answer.includes(index)) cls += " correct";
+            if (selected && !item.answer.includes(index)) cls += " wrong";
+          }
+          return `<button class="answer ${cls}" type="button" data-toggle-multi="${index}">${text}</button>`;
+        }).join("") + `<button class="primary-btn" type="button" data-submit-multi>提交多选</button>`;
+      } else {
+        html = item.options.map((text, index) => {
+          let cls = "";
+          if (submitted) {
+            if (index === item.answer) cls = "correct";
+            if (index === Number(entry.value) && index !== item.answer) cls = "wrong";
+          }
+          return `<button class="answer ${cls}" type="button" data-answer="${index}">${text}</button>`;
+        }).join("");
+      }
+      document.getElementById("answers").innerHTML = html;
+
+      const feedback = document.getElementById("quizFeedback");
+      if (!answered || !submitted) {
+        feedback.textContent = type === "multi" ? "请选择所有你认为正确的选项，然后提交。" :
+          type === "order" ? "按顺序点击选项，然后提交排序。" :
+          type === "text" ? "输入简短答案后提交。系统按关键词辅助判断。" :
+          "请选择一个答案。";
+      } else if (correct) {
+        feedback.textContent = `答对了。${item.explain}`;
+      } else {
+        feedback.textContent = `这里需要再想一步。你的答案：${answerLabel(item, entry.value)}。参考：${item.answerText || answerLabel(item, item.answer)}。${item.explain}`;
+      }
+      updateStats();
+    }
+
+    function updateStats() {
+      const answered = Object.keys(appState.quizAnswers);
+      const submitted = answered.filter(index => getQuizEntry(index).submitted);
+      const right = submitted.filter(index => isQuizCorrect(quiz[index], getQuizEntry(index))).length;
+      const score = submitted.length ? Math.round(right / submitted.length * 100) : 0;
+      document.getElementById("rightCount").textContent = right;
+      document.getElementById("quizScore").textContent = `${score}%`;
+      document.getElementById("favCount").textContent = appState.favorites.size;
+    }
+
+    function updateProgress() {
+      const mainSeenCount = sectionIds.filter(id => appState.seenSections.has(id)).length;
+      const sectionProgress = mainSeenCount / sectionIds.length;
+      const quizProgress = Object.keys(appState.quizAnswers).length / quiz.length;
+      const checkProgress = appState.checked.size / prepItems.length;
+      const favProgress = Math.min(appState.favorites.size / 3, 1);
+      const progress = Math.round((sectionProgress * .45 + quizProgress * .35 + checkProgress * .12 + favProgress * .08) * 100);
+      document.getElementById("progressText").textContent = `${progress}%`;
+      document.getElementById("progressFill").style.width = `${progress}%`;
+    }
+
+    function setActiveNav(id) {
+      document.querySelectorAll("[data-nav]").forEach(link => {
+        link.classList.toggle("active", link.dataset.nav === id);
+      });
+    }
+
+    function moduleFromHash(hash) {
+      const id = (hash || window.location.hash || "#home").replace("#", "") || "home";
+      if (id === "quick" || id === "story" || id === "terms") return { module: "knowledge", nav: "quick", focus: "quick" };
+      if (id === "meds") return { module: "meds", nav: "meds", focus: "meds" };
+      if (id === "tools") return { module: "sop", nav: "tools", focus: "tools" };
+      if (id === "quiz") return { module: "quiz", nav: "quiz", focus: "quiz" };
+      return { module: "home", nav: "home", focus: "home" };
+    }
+
+    function showModule(hash, shouldScroll = true) {
+      const target = moduleFromHash(hash);
+      document.querySelectorAll(".learning-section").forEach(section => {
+        section.classList.toggle("view-hidden", section.dataset.module !== target.module);
+      });
+      setActiveNav(target.nav);
+      if (sectionIds.includes(target.nav)) {
+        appState.seenSections.add(target.nav);
+        saveState();
+        updateProgress();
+      }
+      if (shouldScroll) {
+        const node = document.getElementById(target.focus);
+        if (node) node.scrollIntoView({ block: "start" });
+      }
+    }
+
+    function setupObservers() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            const navId = id === "story" || id === "terms" ? "quick" : id;
+            if (sectionIds.includes(navId)) appState.seenSections.add(navId);
+            setActiveNav(navId);
+            saveState();
+            updateProgress();
+          }
+        });
+      }, { rootMargin: "-25% 0px -62% 0px", threshold: 0 });
+      document.querySelectorAll(".learning-section").forEach(section => observer.observe(section));
+    }
+
+    function setupModuleNavigation() {
+      document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener("click", event => {
+          const hash = link.getAttribute("href");
+          if (!hash || hash === "#") return;
+          event.preventDefault();
+          history.pushState(null, "", hash);
+          showModule(hash);
+        });
+      });
+
+      window.addEventListener("popstate", () => showModule(window.location.hash));
+      showModule(window.location.hash || "#home", false);
+    }
+
+    function setupSearch() {
+      const input = document.getElementById("searchInput");
+      const empty = document.getElementById("searchEmpty");
+      input.addEventListener("input", () => {
+        const query = input.value.trim().toLowerCase();
+        let visible = 0;
+        document.querySelectorAll(".searchable").forEach(node => {
+          const text = (node.dataset.text || node.textContent).toLowerCase();
+          const hit = !query || text.includes(query);
+          node.classList.toggle("hidden-by-search", !hit);
+          if (hit) visible++;
+        });
+        empty.style.display = query && visible === 0 ? "block" : "none";
+      });
+    }
+
+    function setupTools() {
+      document.querySelectorAll("[data-tool]").forEach(button => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll("[data-tool]").forEach(btn => btn.classList.remove("active"));
+          document.querySelectorAll(".tool-screen").forEach(screen => screen.classList.remove("active"));
+          button.classList.add("active");
+          document.getElementById(`tool-${button.dataset.tool}`).classList.add("active");
+        });
+      });
+    }
+
+    function setupEvents() {
+      document.body.addEventListener("click", event => {
+        const favButton = event.target.closest("[data-fav]");
+        if (favButton) {
+          const id = favButton.dataset.fav;
+          if (appState.favorites.has(id)) {
+            appState.favorites.delete(id);
+            toast("已取消收藏。");
+          } else {
+            appState.favorites.add(id);
+            toast("已收藏到重点。");
+          }
+          favButton.classList.toggle("active", appState.favorites.has(id));
+          saveState();
+          updateStats();
+          updateProgress();
+        }
+
+        const answer = event.target.closest("[data-answer]");
+        if (answer) {
+          setQuizEntry(Number(answer.dataset.answer), true);
+          renderQuiz();
+          updateProgress();
+        }
+
+        const multi = event.target.closest("[data-toggle-multi]");
+        if (multi) {
+          const entry = getQuizEntry();
+          if (entry.submitted) return;
+          const index = Number(multi.dataset.toggleMulti);
+          const picked = Array.isArray(entry.value) ? [...entry.value] : [];
+          const next = picked.includes(index) ? picked.filter(item => item !== index) : [...picked, index];
+          setQuizEntry(next, false);
+          renderQuiz();
+          updateProgress();
+        }
+
+        if (event.target.closest("[data-submit-multi]")) {
+          const entry = getQuizEntry();
+          setQuizEntry(Array.isArray(entry.value) ? entry.value : [], true);
+          renderQuiz();
+          updateProgress();
+        }
+
+        const order = event.target.closest("[data-order]");
+        if (order) {
+          const entry = getQuizEntry();
+          if (entry.submitted) return;
+          const index = Number(order.dataset.order);
+          const picked = Array.isArray(entry.value) ? [...entry.value] : [];
+          if (!picked.includes(index)) picked.push(index);
+          setQuizEntry(picked, false);
+          renderQuiz();
+          updateProgress();
+        }
+
+        if (event.target.closest("[data-clear-order]")) {
+          setQuizEntry([], false);
+          renderQuiz();
+          updateProgress();
+        }
+
+        if (event.target.closest("[data-submit-order]")) {
+          const entry = getQuizEntry();
+          setQuizEntry(Array.isArray(entry.value) ? entry.value : [], true);
+          renderQuiz();
+          updateProgress();
+        }
+
+        if (event.target.closest("[data-submit-text]")) {
+          const input = document.getElementById("textAnswer");
+          setQuizEntry(input ? input.value : "", true);
+          renderQuiz();
+          updateProgress();
+        }
+      });
+
+      document.body.addEventListener("input", event => {
+        const input = event.target.closest("#textAnswer");
+        if (!input) return;
+        setQuizEntry(input.value, false);
+        updateProgress();
+      });
+
+      document.body.addEventListener("change", event => {
+        const check = event.target.closest("[data-check]");
+        if (!check) return;
+        if (check.checked) {
+          appState.checked.add(check.dataset.check);
+        } else {
+          appState.checked.delete(check.dataset.check);
+        }
+        saveState();
+        updateProgress();
+      });
+
+      document.getElementById("nextQuestion").addEventListener("click", () => {
+        appState.quizIndex = (appState.quizIndex + 1) % quiz.length;
+        saveState();
+        renderQuiz();
+      });
+
+      document.getElementById("prevQuestion").addEventListener("click", () => {
+        appState.quizIndex = (appState.quizIndex - 1 + quiz.length) % quiz.length;
+        saveState();
+        renderQuiz();
+      });
+
+      document.getElementById("resetProgress").addEventListener("click", () => {
+        appState.favorites.clear();
+        appState.checked.clear();
+        appState.quizAnswers = {};
+        appState.quizIndex = 0;
+        appState.seenSections.clear();
+        saveState();
+        renderRecommendations();
+        renderPrep();
+        renderQuiz();
+        updateProgress();
+        toast("学习记录已重置。");
+      });
+    }
+
+    function setupInstall() {
+      let installPrompt = null;
+      const button = document.getElementById("installButton");
+      window.addEventListener("beforeinstallprompt", event => {
+        event.preventDefault();
+        installPrompt = event;
+        button.hidden = false;
+      });
+
+      button.addEventListener("click", async () => {
+        if (installPrompt) {
+          installPrompt.prompt();
+          await installPrompt.userChoice;
+          installPrompt = null;
+          return;
+        }
+        toast("手机上可用浏览器菜单选择“添加到主屏幕”。iPhone 请用 Safari 分享按钮添加。");
+      });
+    }
+
+    function setupServiceWorker() {
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("service-worker.js").catch(() => {
+            toast("离线缓存暂未启用，请用本地服务器或 HTTPS 打开。");
+          });
+        });
+      }
+    }
+
+    function boot() {
+      renderRecommendations();
+      renderStory();
+      renderPrep();
+      renderTimeline();
+      renderTerms();
+      renderQuiz();
+      updateProgress();
+      setupEvents();
+      setupTools();
+      setupSearch();
+      setupModuleNavigation();
+      setupObservers();
+      setupInstall();
+      setupServiceWorker();
+    }
+
+    boot();
+  </script>
+</body>
+</html>
