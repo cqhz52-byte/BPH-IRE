@@ -187,6 +187,7 @@
     .install-btn,
     .ghost-btn,
     .primary-btn,
+    .lang-btn,
     .chip-btn {
       display: inline-flex;
       align-items: center;
@@ -208,10 +209,16 @@
     }
 
     .ghost-btn,
+    .lang-btn,
     .chip-btn {
       color: var(--ink);
       background: var(--paper);
       border-color: var(--line);
+    }
+
+    .lang-btn {
+      min-width: 64px;
+      font-weight: 800;
     }
 
     .layout {
@@ -1240,6 +1247,11 @@
         padding: 0;
       }
 
+      .lang-btn {
+        min-width: 54px;
+        padding: 0 10px;
+      }
+
       .install-btn span {
         display: none;
       }
@@ -1428,6 +1440,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
           <span>安装</span>
         </button>
+        <button class="lang-btn" id="langButton" type="button" title="Switch language">EN</button>
       </div>
     </header>
 
@@ -1949,6 +1962,12 @@
       seenSections: new Set(JSON.parse(localStorage.getItem("ireSeenSections") || "[]"))
     };
 
+    const requestedLang = new URLSearchParams(window.location.search).get("lang");
+    if (requestedLang === "en" || requestedLang === "zh") {
+      localStorage.setItem("ireLang", requestedLang);
+    }
+    const currentLang = localStorage.getItem("ireLang") === "en" ? "en" : "zh";
+
     const recommendations = [
       { id: "rec1", tag: "一般推荐", tone: "", title: "放疗后局部复发，可考虑挽救性 IRE", body: "先完成恰当诊断评估，再讨论是否用 IRE 做局部挽救治疗。人话说：不是一复发就做，先把复发范围弄清楚。" },
       { id: "rec2", tag: "一般推荐", tone: "warn", title: "高危/CRPC/转移性原发灶，建议放在临床研究中", body: "这些场景更复杂，共识倾向在充分知情和研究框架下开展减瘤性 IRE。" },
@@ -2266,7 +2285,77 @@
       }
     );
 
+    const recommendationsEn = [
+      { id: "rec1", tag: "General", tone: "", title: "Salvage IRE may be considered after local recurrence following radiotherapy", body: "Complete an appropriate diagnostic work-up first. In plain words: do not treat a rising PSA alone; clarify the site and extent of recurrence." },
+      { id: "rec2", tag: "General", tone: "warn", title: "High-risk, CRPC, or metastatic-primary debulking should stay in a research framework", body: "These scenarios are more complex. The consensus favors full informed consent and clinical-study governance." },
+      { id: "rec3", tag: "Strong", tone: "strong", title: "IRE may be selected for low- or intermediate-risk localized prostate cancer", body: "This is the clearest target population: localized disease, local tumor control, and maximal preservation of function." },
+      { id: "rec4", tag: "Strong", tone: "strong", title: "PSA should be monitored after treatment", body: "PSA acts like a trend line for ablation effect and disease progression. At 1, 3, and 6 months it should fall markedly and is suggested to be no more than 2.0 ng/mL." },
+      { id: "rec5", tag: "Strong", tone: "strong", title: "MRI or contrast-enhanced ultrasound can routinely assess ablation effect", body: "Imaging answers whether the target lesion has been adequately treated. No enhancement on contrast MRI supports complete ablation." },
+      { id: "rec6", tag: "General", tone: "", title: "Bone scan or PSMA-PET is considered when PSA keeps rising or bone pain appears", body: "They are not routine at every follow-up visit, but they are useful when recurrence or metastasis is suspected." },
+      { id: "rec7", tag: "Strong", tone: "strong", title: "Persistent PSA rise or abnormal imaging should lead to biopsy confirmation", body: "Suspicion is not diagnosis. Prostate biopsy is important for confirming recurrence." }
+    ];
+
+    const storyStepsEn = [
+      { title: "Identify localized prostate cancer", body: "Confirm risk group and lesion extent. The clearest IRE learning scenario is low- or intermediate-risk localized disease." },
+      { title: "Decide whether IRE is suitable", body: "Check indications and contraindications. A suitable lesion is only the first step; anesthesia and safety boundaries also matter." },
+      { title: "Build the preoperative map", body: "Complete laboratory tests, PSA, biopsy, multiparametric MRI, and metastatic work-up when needed." },
+      { title: "Locate and place electrodes", body: "Use biopsy location as the main reference, with MRI, ultrasound, or PSMA-PET as support. If imaging and pathology conflict, pathology is prioritized." },
+      { title: "Deliver pulsed electric-field ablation", body: "Electrode pairs create the treatment field. Parameters are generated from electrode exposure and needle spacing." },
+      { title: "Follow PSA and imaging", body: "Check PSA and imaging at 1 month, then follow every 3-6 months. Biopsy at 6 months or 1 year may assess efficacy." },
+      { title: "If recurrence is suspected, confirm before treating", body: "When biopsy confirms recurrence and disease remains low/intermediate-risk localized, repeat IRE, radical surgery, or radiotherapy may be discussed." }
+    ];
+
+    const prepItemsEn = [
+      { id: "prep1", title: "Routine tests before general anesthesia", body: "CBC, urinalysis, biochemistry, coagulation profile, serum PSA, and related tests." },
+      { id: "prep2", title: "Primary lesion assessment", body: "Transperineal systematic plus targeted biopsy is recommended, together with multiparametric prostate MRI." },
+      { id: "prep3", title: "Metastatic assessment", body: "Bone scan and PSMA-PET-CT or PSMA-PET-MRI may clarify lesion extent and metastasis." },
+      { id: "prep4", title: "Team and equipment", body: "Ablation physician, nurses, imaging specialist, device operator, IRE generator, electrodes, anesthesia and resuscitation equipment." },
+      { id: "prep5", title: "Medication preparation", body: "Neuromuscular blockers, reversal agents, and commonly used emergency medications." },
+      { id: "prep6", title: "Optional imaging", body: "PSMA-PET, contrast-enhanced prostate ultrasound, or whole-body MRI depending on clinical context." }
+    ];
+
+    const followTimelineEn = [
+      { time: "1 month after surgery", body: "Measure PSA and perform imaging to assess early treatment effect." },
+      { time: "Every 3-6 months", body: "Follow PSA, DRE, MRI or contrast-enhanced ultrasound, PHI and related items." },
+      { time: "6 months or 1 year", body: "Biopsy is recommended as a routine efficacy assessment when patient compliance allows." },
+      { time: "After 3 years", body: "Annual follow-up; MRI is the main imaging method." }
+    ];
+
+    const termsEn = [
+      { title: "PSA", body: "Prostate-specific antigen. Think of it as a trend alert; if it rises instead of falling after treatment, further evaluation is needed." },
+      { title: "Gleason score", body: "A pathology score reflecting tumor aggressiveness. The consensus target population emphasizes a score no higher than 7." },
+      { title: "MRI", body: "Magnetic resonance imaging. It helps map lesion location, extent, and residual enhancement after ablation." },
+      { title: "PSMA-PET", body: "A sensitive imaging method for prostate-cancer-related lesions, especially when recurrence or metastasis must be clarified." },
+      { title: "Biopsy", body: "Tissue sampling for pathology. When PSA or imaging is suspicious, biopsy helps turn suspicion into a clearer diagnosis." },
+      { title: "Complete ablation", body: "Contrast MRI shows complete necrosis and no enhancement in the target lesion." },
+      { title: "Incomplete ablation", body: "Residual local enhancement suggests possible remaining tumor and requires further judgment." },
+      { title: "Focal therapy", body: "Treatment focused on the tumor and target margin while reducing injury to the urethra, sphincter, neurovascular bundle, and nearby structures." }
+    ];
+
+    const quizEn = [
+      { q: "Which group is the clearest consensus-supported target for prostate IRE?", options: ["Low- or intermediate-risk localized prostate cancer", "All metastatic prostate cancer", "Any PSA rise after radiotherapy", "Any patient unsuitable for surgery"], answer: 0, explain: "The strong recommendation points to low- or intermediate-risk localized prostate cancer." },
+      { q: "Which item is a contraindication to IRE?", options: ["PSA < 20 ng/mL", "Active implanted device such as a pacemaker", "T1a to T2c disease", "Gleason score <= 7"], answer: 1, explain: "Active implanted devices, severe cardiac disease, third-degree AV block, severe infection, and seizure history are important contraindications." },
+      { q: "If PSA keeps rising or imaging is abnormal after IRE, what is the key next step?", options: ["Stop all follow-up", "Observe without tests", "Perform prostate biopsy to confirm recurrence", "Weekly bone scan for everyone"], answer: 2, explain: "Biopsy is recommended to clarify whether recurrence is present." },
+      { q: "How far should the ablation boundary usually extend beyond the tumor edge?", options: ["1-2 mm", "5-10 mm", "3-4 cm", "No margin is needed"], answer: 1, explain: "The consensus describes extending the ablation boundary 5-10 mm beyond the tumor edge." },
+      { type: "multi", level: "Advanced multiple choice", q: "Which items fit the consensus indication profile?", options: ["PSA < 20 ng/mL", "T1a to T2c", "Gleason score <= 7", "Definite bone metastasis", "No seminal vesicle or capsular invasion on imaging"], answer: [0, 1, 2, 4], explain: "The indication profile includes PSA < 20, T1a-T2c, Gleason <= 7, and no invasion or metastasis." },
+      { type: "judge", level: "True/False", q: "When imaging and biopsy localization conflict, the consensus emphasizes biopsy pathology as the primary reference.", options: ["True", "False"], answer: 0, explain: "Correct. Biopsy location information is the main reference, with imaging as support." },
+      { type: "text", level: "Fill in", q: "At 1, 3, and 6 months after IRE, PSA should fall markedly. The suggested upper value is ___ ng/mL.", keywords: ["2", "2.0"], answerText: "2.0 ng/mL", explain: "The consensus suggests PSA should be no more than 2.0 ng/mL." },
+      { type: "order", level: "Ordering", q: "Put the IRE workflow in a reasonable clinical order.", options: ["Follow-up and efficacy assessment", "Check indications and contraindications", "Preoperative tests and lesion mapping", "Localization, electrode placement, and ablation"], answer: [1, 2, 3, 0], explain: "Check suitability first, then map and prepare, then ablate, then follow up." },
+      { type: "multi", level: "Medication", q: "According to the medication summary, which statements about 5-alpha reductase inhibitors are appropriate?", options: ["Examples include finasteride and dutasteride", "They suppress DHT", "They may reduce hematuria risk", "They are long-term high-dose glucocorticoids", "They may continue for 3-6 months after surgery"], answer: [0, 1, 2, 4], explain: "They are hormonal-regulation drugs, not traditional glucocorticoids." },
+      { type: "judge", level: "Intraoperative medication", q: "The consensus recommends endotracheal general anesthesia and intraoperative neuromuscular blockade for IRE.", options: ["True", "False"], answer: 0, explain: "Correct. The consensus also recommends reversal of neuromuscular blockade after surgery." },
+      { type: "multi", level: "Intraoperative medication", q: "Which statements about anesthesia and neuromuscular-blocking drugs are appropriate?", options: ["The anesthesiologist decides the specific regimen", "Neuromuscular blockade helps reduce pulse-related muscle contraction", "The consensus gives a fixed propofol dose", "Reversal agents may be used after the procedure", "ASA assessment remains necessary"], answer: [0, 1, 3, 4], explain: "The consensus gives principles, not fixed anesthetic doses." },
+      { type: "text", level: "Short answer", q: "Name any two common postoperative complications mentioned in the consensus.", keywords: ["hematuria", "urinary tract infection", "dysuria", "urinary retention", "incontinence", "erectile dysfunction"], minHits: 2, answerText: "Examples: hematuria, urinary tract infection, dysuria, urinary retention.", explain: "The consensus mentions hematuria, urinary tract infection, dysuria, urinary retention, and low rates of incontinence/ED." }
+    ];
+
     const sectionIds = ["home", "quick", "meds", "tools", "quiz"];
+
+    function dataSet(zh, en) {
+      return currentLang === "en" ? en : zh;
+    }
+
+    function activeQuiz() {
+      return currentLang === "en" ? quizEn : quiz;
+    }
 
     function saveState() {
       localStorage.setItem("ireFavorites", JSON.stringify([...appState.favorites]));
@@ -2286,7 +2375,7 @@
 
     function renderRecommendations() {
       const wrap = document.getElementById("recommendations");
-      wrap.innerHTML = recommendations.map(item => `
+      wrap.innerHTML = dataSet(recommendations, recommendationsEn).map(item => `
         <article class="card searchable" data-text="${item.title} ${item.body} ${item.tag}">
           <button class="favorite ${appState.favorites.has(item.id) ? "active" : ""}" type="button" data-fav="${item.id}" aria-label="收藏 ${item.title}">${icons.star}</button>
           <span class="tag ${item.tone}">${item.tag}</span>
@@ -2298,7 +2387,7 @@
 
     function renderStory() {
       const wrap = document.getElementById("storyline");
-      wrap.innerHTML = storySteps.map(step => `
+      wrap.innerHTML = dataSet(storySteps, storyStepsEn).map(step => `
         <article class="story-step searchable" data-text="${step.title} ${step.body}">
           <div>
             <h3>${step.title}</h3>
@@ -2310,7 +2399,7 @@
 
     function renderPrep() {
       const wrap = document.getElementById("prepChecklist");
-      wrap.innerHTML = prepItems.map(item => `
+      wrap.innerHTML = dataSet(prepItems, prepItemsEn).map(item => `
         <label class="check-item searchable" data-text="${item.title} ${item.body}">
           <input type="checkbox" data-check="${item.id}" ${appState.checked.has(item.id) ? "checked" : ""}>
           <span><strong>${item.title}</strong><br>${item.body}</span>
@@ -2320,7 +2409,7 @@
 
     function renderTimeline() {
       const wrap = document.getElementById("followTimeline");
-      wrap.innerHTML = followTimeline.map(item => `
+      wrap.innerHTML = dataSet(followTimeline, followTimelineEn).map(item => `
         <article class="time-card searchable" data-text="${item.time} ${item.body}">
           <strong>${item.time}</strong>
           <span>${item.body}</span>
@@ -2330,7 +2419,7 @@
 
     function renderTerms() {
       const wrap = document.getElementById("termsList");
-      wrap.innerHTML = terms.map(item => `
+      wrap.innerHTML = dataSet(terms, termsEn).map(item => `
         <details class="term searchable" data-text="${item.title} ${item.body}">
           <summary>${item.title}</summary>
           <p>${item.body}</p>
@@ -2384,7 +2473,12 @@
     }
 
     function renderQuiz() {
-      const item = quiz[appState.quizIndex];
+      const quizItems = activeQuiz();
+      if (appState.quizIndex >= quizItems.length) {
+        appState.quizIndex = 0;
+        saveState();
+      }
+      const item = quizItems[appState.quizIndex];
       const type = item.type || "single";
       const entry = getQuizEntry();
       const answered = entry.value !== undefined && entry.value !== "";
@@ -2395,13 +2489,13 @@
       let html = "";
       if (type === "text") {
         html = `
-          <input class="text-answer" id="textAnswer" type="text" value="${entry.value || ""}" placeholder="输入关键词或简短答案">
-          <button class="primary-btn" type="button" data-submit-text>提交答案</button>
+          <input class="text-answer" id="textAnswer" type="text" value="${entry.value || ""}" placeholder="${currentLang === "en" ? "Enter keywords or a short answer" : "输入关键词或简短答案"}">
+          <button class="primary-btn" type="button" data-submit-text>${currentLang === "en" ? "Submit answer" : "提交答案"}</button>
         `;
       } else if (type === "order") {
         const picked = Array.isArray(entry.value) ? entry.value : [];
         html = `
-          <div class="order-picked">当前顺序：${picked.length ? picked.map((index, order) => `${order + 1}. ${item.options[index]}`).join("　") : "点击下方选项开始排序"}</div>
+          <div class="order-picked">${currentLang === "en" ? "Current order:" : "当前顺序："} ${picked.length ? picked.map((index, order) => `${order + 1}. ${item.options[index]}`).join("　") : (currentLang === "en" ? "Tap options below to start ordering" : "点击下方选项开始排序")}</div>
           ${item.options.map((text, index) => {
             const used = picked.includes(index);
             let cls = used ? "selected" : "";
@@ -2412,8 +2506,8 @@
             return `<button class="answer ${cls}" type="button" data-order="${index}" ${used || submitted ? "disabled" : ""}>${text}</button>`;
           }).join("")}
           <div class="quiz-controls">
-            <button class="ghost-btn" type="button" data-clear-order>清空排序</button>
-            <button class="primary-btn" type="button" data-submit-order>提交排序</button>
+            <button class="ghost-btn" type="button" data-clear-order>${currentLang === "en" ? "Clear order" : "清空排序"}</button>
+            <button class="primary-btn" type="button" data-submit-order>${currentLang === "en" ? "Submit order" : "提交排序"}</button>
           </div>
         `;
       } else if (type === "multi") {
@@ -2426,7 +2520,7 @@
             if (selected && !item.answer.includes(index)) cls += " wrong";
           }
           return `<button class="answer ${cls}" type="button" data-toggle-multi="${index}">${text}</button>`;
-        }).join("") + `<button class="primary-btn" type="button" data-submit-multi>提交多选</button>`;
+        }).join("") + `<button class="primary-btn" type="button" data-submit-multi>${currentLang === "en" ? "Submit multiple choice" : "提交多选"}</button>`;
       } else {
         html = item.options.map((text, index) => {
           let cls = "";
@@ -2441,14 +2535,21 @@
 
       const feedback = document.getElementById("quizFeedback");
       if (!answered || !submitted) {
-        feedback.textContent = type === "multi" ? "请选择所有你认为正确的选项，然后提交。" :
+        feedback.textContent = currentLang === "en" ?
+          (type === "multi" ? "Select all correct options, then submit." :
+          type === "order" ? "Tap the options in order, then submit." :
+          type === "text" ? "Enter a short answer and submit. Keywords are used for assisted scoring." :
+          "Select one answer.") :
+          (type === "multi" ? "请选择所有你认为正确的选项，然后提交。" :
           type === "order" ? "按顺序点击选项，然后提交排序。" :
           type === "text" ? "输入简短答案后提交。系统按关键词辅助判断。" :
-          "请选择一个答案。";
+          "请选择一个答案。");
       } else if (correct) {
-        feedback.textContent = `答对了。${item.explain}`;
+        feedback.textContent = currentLang === "en" ? `Correct. ${item.explain}` : `答对了。${item.explain}`;
       } else {
-        feedback.textContent = `这里需要再想一步。你的答案：${answerLabel(item, entry.value)}。参考：${item.answerText || answerLabel(item, item.answer)}。${item.explain}`;
+        feedback.textContent = currentLang === "en" ?
+          `Review this point. Your answer: ${answerLabel(item, entry.value)}. Reference: ${item.answerText || answerLabel(item, item.answer)}. ${item.explain}` :
+          `这里需要再想一步。你的答案：${answerLabel(item, entry.value)}。参考：${item.answerText || answerLabel(item, item.answer)}。${item.explain}`;
       }
       updateStats();
     }
@@ -2456,7 +2557,8 @@
     function updateStats() {
       const answered = Object.keys(appState.quizAnswers);
       const submitted = answered.filter(index => getQuizEntry(index).submitted);
-      const right = submitted.filter(index => isQuizCorrect(quiz[index], getQuizEntry(index))).length;
+      const quizItems = activeQuiz();
+      const right = submitted.filter(index => quizItems[index] && isQuizCorrect(quizItems[index], getQuizEntry(index))).length;
       const score = submitted.length ? Math.round(right / submitted.length * 100) : 0;
       document.getElementById("rightCount").textContent = right;
       document.getElementById("quizScore").textContent = `${score}%`;
@@ -2466,7 +2568,7 @@
     function updateProgress() {
       const mainSeenCount = sectionIds.filter(id => appState.seenSections.has(id)).length;
       const sectionProgress = mainSeenCount / sectionIds.length;
-      const quizProgress = Object.keys(appState.quizAnswers).length / quiz.length;
+      const quizProgress = Object.keys(appState.quizAnswers).length / activeQuiz().length;
       const checkProgress = appState.checked.size / prepItems.length;
       const favProgress = Math.min(appState.favorites.size / 3, 1);
       const progress = Math.round((sectionProgress * .45 + quizProgress * .35 + checkProgress * .12 + favProgress * .08) * 100);
@@ -2661,13 +2763,13 @@
       });
 
       document.getElementById("nextQuestion").addEventListener("click", () => {
-        appState.quizIndex = (appState.quizIndex + 1) % quiz.length;
+        appState.quizIndex = (appState.quizIndex + 1) % activeQuiz().length;
         saveState();
         renderQuiz();
       });
 
       document.getElementById("prevQuestion").addEventListener("click", () => {
-        appState.quizIndex = (appState.quizIndex - 1 + quiz.length) % quiz.length;
+        appState.quizIndex = (appState.quizIndex - 1 + activeQuiz().length) % activeQuiz().length;
         saveState();
         renderQuiz();
       });
@@ -2685,6 +2787,152 @@
         updateProgress();
         toast("学习记录已重置。");
       });
+    }
+
+    function applyLanguage() {
+      const isEn = currentLang === "en";
+      document.documentElement.lang = isEn ? "en" : "zh-CN";
+      const langButton = document.getElementById("langButton");
+      if (langButton) langButton.textContent = isEn ? "中文" : "EN";
+      langButton?.addEventListener("click", () => {
+        localStorage.setItem("ireLang", isEn ? "zh" : "en");
+        localStorage.removeItem("ireQuizAnswers");
+        localStorage.setItem("ireQuizIndex", "0");
+        location.reload();
+      });
+
+      if (!isEn) return;
+
+      document.title = "IRE Consensus EasyLearn";
+      document.querySelector('meta[name="description"]')?.setAttribute("content", "A prostate IRE learning PWA with a knowledge base, medication module, SOP workflow, and exam bank.");
+      document.querySelector(".brand-title").textContent = "IRE EasyLearn";
+      document.querySelector(".brand-subtitle").textContent = "Knowledge · Meds · SOP";
+      document.getElementById("searchInput").placeholder = "Search PSA, contraindications, meds...";
+      document.getElementById("installButton").title = "Install to home screen";
+      document.querySelector("#installButton span").textContent = "Install";
+
+      const sideLabels = { home: ["Home", "01"], quick: ["Knowledge", "02"], meds: ["Meds", "03"], tools: ["SOP", "04"], quiz: ["Exam", "05"] };
+      Object.entries(sideLabels).forEach(([key, value]) => {
+        const side = document.querySelector(`.side [data-nav="${key}"]`);
+        if (side) side.innerHTML = `${value[0]} <span>${value[1]}</span>`;
+        const bottom = document.querySelector(`.bottom-nav [data-nav="${key}"]`);
+        if (bottom) {
+          const icon = bottom.querySelector(".nav-icon")?.outerHTML || "";
+          bottom.innerHTML = `${icon}${value[0]}`;
+        }
+      });
+
+      document.querySelector("#home .eyebrow").textContent = "Prostate IRE focal therapy consensus";
+      document.querySelector("#home h1").textContent = "Prostate IRE Treatment Essentials";
+      document.querySelector("#home p:not(.eyebrow)").textContent = "IRE uses pulsed electric fields to treat a local target while aiming to protect nearby structures such as the urethra, sphincter, and neurovascular bundle.";
+      document.querySelector(".hero-actions a[href='#quick']").textContent = "Open Knowledge Base";
+      document.querySelector(".hero-actions a[href='#tools']").textContent = "View SOP";
+      document.querySelector(".notice div").textContent = "This app is for medical training and consensus learning only. It does not replace clinical decision-making or prescriptions.";
+      const modules = document.querySelectorAll(".module-link");
+      if (modules[0]) modules[0].innerHTML = "<strong>Knowledge Base</strong><span>Consensus essentials, inclusion/exclusion, complications, procedure, follow-up.</span>";
+      if (modules[1]) modules[1].innerHTML = "<strong>Medication Module</strong><span>Perioperative medication timing, use cases, and safety notes.</span>";
+      if (modules[2]) modules[2].innerHTML = "<strong>SOP Workflow</strong><span>Standard steps from pre-op assessment to follow-up.</span>";
+      if (modules[3]) modules[3].innerHTML = "<strong>Exam Bank</strong><span>Single choice, multiple choice, true/false, ordering, short answer, and cases.</span>";
+
+      document.querySelector("#quick .eyebrow").textContent = "Knowledge Base";
+      document.querySelector("#quick h2").textContent = "A structured reference for the IRE consensus";
+      document.querySelector("#quick .section-copy").textContent = "Includes consensus essentials, inclusion/exclusion criteria, complications, procedure, follow-up, and efficacy assessment.";
+      document.getElementById("resetProgress").textContent = "Reset progress";
+      document.querySelector(".knowledge-summary").innerHTML = `
+        <article class="card searchable" data-text="knowledge consensus recommendations IRE"><span class="tag strong">Consensus</span><h3>Core recommendations</h3><p>Seven cards summarize the main points: target population, efficacy assessment, recurrence confirmation, and special scenarios.</p></article>
+        <article class="card searchable" data-text="inclusion exclusion criteria contraindications low intermediate risk"><span class="tag">Criteria</span><h3>Who fits, who does not</h3><p>Focus on low/intermediate-risk localized disease, PSA, T stage, Gleason score, and contraindications.</p></article>
+        <article class="card searchable" data-text="procedure preoperative localization electrode placement ablation catheter"><span class="tag">Procedure</span><h3>From preparation to ablation</h3><p>Covers tests, anesthesia, localization, electrode placement, ablation parameters, and postoperative handling.</p></article>
+        <article class="card searchable" data-text="complications follow-up efficacy recurrence PSA MRI biopsy"><span class="tag warn">Post-op</span><h3>Complications and follow-up</h3><p>Includes hematuria, infection, urinary symptoms, PSA trend, MRI/CEUS, biopsy, and recurrence management.</p></article>`;
+      document.querySelector("#quick .care-timeline").innerHTML = `
+        <article class="timeline-step"><time>Pre-op assessment</time><p>Confirm indications and rule out anesthesia, cardiac, infection, seizure, and implant-related contraindications.</p></article>
+        <article class="timeline-step"><time>Pre-op preparation</time><p>Complete labs, PSA, transperineal systematic plus targeted biopsy, MRI, and metastatic work-up when needed.</p></article>
+        <article class="timeline-step"><time>Intraoperative treatment</time><p>Use biopsy localization as the main reference and plan the margin 5-10 mm beyond the tumor edge.</p></article>
+        <article class="timeline-step"><time>Follow-up</time><p>PSA and imaging at 1 month, then every 3-6 months; biopsy at 6 months or 1 year when appropriate.</p></article>`;
+
+      document.querySelector("#story .eyebrow").textContent = "Knowledge supplement";
+      document.querySelector("#story h2").textContent = "Clinical pathway memory aid";
+      document.querySelector("#story .section-copy").textContent = "A compact sequence that connects eligibility, procedure, follow-up, and recurrence handling.";
+      document.querySelector("#terms .eyebrow").textContent = "Knowledge supplement";
+      document.querySelector("#terms h2").textContent = "Term lookup";
+      document.querySelector("#terms .section-copy").textContent = "Short explanations before detailed reading.";
+
+      document.querySelector("#tools .eyebrow").textContent = "SOP Workflow";
+      document.querySelector("#tools h2").textContent = "Understand IRE through standard operating steps";
+      document.querySelector("#tools .section-copy").textContent = "The SOP tab is the main entry; the other tabs are quick references for selection, preparation, electrode placement, follow-up, and complications.";
+      document.querySelector("#tools .tool-panel").innerHTML = `
+        <div class="tool-tabs" role="tablist" aria-label="SOP and quick tools">
+          <button class="chip-btn active" type="button" data-tool="sop">SOP</button>
+          <button class="chip-btn" type="button" data-tool="fit">Eligibility</button>
+          <button class="chip-btn" type="button" data-tool="prep">Pre-op</button>
+          <button class="chip-btn" type="button" data-tool="needle">Electrodes</button>
+          <button class="chip-btn" type="button" data-tool="follow">Follow-up</button>
+          <button class="chip-btn" type="button" data-tool="effect">Efficacy</button>
+          <button class="chip-btn" type="button" data-tool="complication">Complications</button>
+        </div>
+        <div class="tool-screen active" id="tool-sop">
+          <div class="care-timeline compact searchable" data-text="SOP timeline eligibility preparation localization ablation follow-up">
+            <article class="timeline-step"><time>Eligibility</time><p>Check indications and contraindications first.</p></article>
+            <article class="timeline-step"><time>Preparation</time><p>Complete tests, team, anesthesia, equipment, and medication preparation.</p></article>
+            <article class="timeline-step"><time>Localization</time><p>Use biopsy location first and plan electrode spacing and margins.</p></article>
+            <article class="timeline-step"><time>Ablation</time><p>Enter electrode specifications and spacing, then monitor pulse parameters.</p></article>
+            <article class="timeline-step"><time>Post-op</time><p>Remove electrodes, confirm integrity, irrigate, catheterize, and provide instructions.</p></article>
+            <article class="timeline-step"><time>Follow-up</time><p>Monitor PSA, DRE, MRI/CEUS, and biopsy when needed.</p></article>
+          </div>
+          <div class="sop-list">
+            <article class="sop-step searchable"><strong>01</strong><div><h3>Patient selection and safety screen</h3><p>Confirm appropriate scenarios such as low/intermediate-risk localized disease and exclude severe cardiac disease, active implants, third-degree AV block, acute infection, seizure history, or inability to tolerate anesthesia.</p></div></article>
+            <article class="sop-step searchable"><strong>02</strong><div><h3>Preoperative tests and lesion map</h3><p>Complete CBC, urinalysis, biochemistry, coagulation, PSA, transperineal systematic plus targeted biopsy, multiparametric MRI, and metastatic assessment when needed.</p></div></article>
+            <article class="sop-step searchable"><strong>03</strong><div><h3>Team, anesthesia, and equipment</h3><p>Complete anesthesia assessment, prepare general anesthesia with intubation, neuromuscular blockers, reversal agents, IRE generator, electrodes, monitoring, and emergency equipment.</p></div></article>
+            <article class="sop-step searchable"><strong>04</strong><div><h3>Localization and electrode planning</h3><p>Use biopsy localization as the main reference. Extend the ablation boundary 5-10 mm beyond the tumor edge; common needle spacing is 0.8-1.5 cm.</p></div></article>
+            <article class="sop-step searchable"><strong>05</strong><div><h3>Post-ablation handling</h3><p>Remove electrodes in order, confirm tip integrity, press the perineum, irrigate the urethra, leave a catheter, and provide antibiotics and lifestyle instructions according to local protocol.</p></div></article>
+            <article class="sop-step searchable"><strong>06</strong><div><h3>Follow-up and recurrence handling</h3><p>Check PSA and imaging at 1 month, then every 3-6 months. If PSA rises or imaging is abnormal, biopsy is needed to confirm recurrence.</p></div></article>
+          </div>
+        </div>
+        <div class="tool-screen" id="tool-fit"><div class="grid two"><article class="card"><span class="tag strong">Best-fit group</span><h3>Low- or intermediate-risk localized prostate cancer</h3><p>Strong recommendation: PSA < 20 ng/mL, T1a-T2c, Gleason <= 7, and no invasion or metastasis on imaging.</p></article><article class="card"><span class="tag warn">Cautious scenarios</span><h3>Salvage or research use</h3><p>Post-radiotherapy local recurrence may be considered for salvage IRE; high-risk/CRPC/metastatic-primary debulking should stay within clinical research.</p></article><article class="card"><span class="tag danger">Exclude first</span><h3>Contraindications</h3><p>Severe cardiac disease, active implants, third-degree AV block, severe infection, seizure history, or inability to tolerate anesthesia.</p></article><article class="card"><span class="tag">One sentence</span><h3>Map the lesion and the patient safety boundary</h3><p>IRE is focal and precise, but it depends on clear lesion mapping and a safe patient profile.</p></article></div></div>
+        <div class="tool-screen" id="tool-prep"><div class="checklist" id="prepChecklist"></div></div>
+        <div class="tool-screen" id="tool-needle"><div class="mini-diagram"><div class="needle-map"><div class="margin-zone"></div><div class="lesion"></div><span class="pin p1"></span><span class="pin p2"></span><span class="pin p3"></span><span class="pin p4"></span></div><div class="card" style="box-shadow:none"><span class="tag">Electrode rule</span><h3>Cover the lesion with a safety margin</h3><p>The ablation boundary usually extends 5-10 mm beyond the tumor edge. Needle spacing is suggested at 0.5-2.0 cm, commonly 0.8-1.5 cm.</p></div></div></div>
+        <div class="tool-screen" id="tool-follow"><div class="timeline" id="followTimeline"></div></div>
+        <div class="tool-screen" id="tool-effect"><div class="route"><div class="route-node"><span class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 3 5-7"></path></svg></span><div><strong>PSA as a trend signal</strong><br><span>At 1, 3, and 6 months PSA should fall markedly; persistent rise needs further work-up.</span></div></div><div class="route-node"><span class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 12h8"></path><path d="M12 8v8"></path></svg></span><div><strong>MRI or CEUS checks residual signal</strong><br><span>No enhancement supports complete ablation; local enhancement suggests possible residual tumor.</span></div></div><div class="route-node"><span class="icon"><svg viewBox="0 0 24 24"><path d="M9 11 4 6"></path><path d="m4 6 2-2 5 5"></path><path d="M13 13l7 7"></path><path d="M14 7l3-3 3 3-3 3Z"></path></svg></span><div><strong>Biopsy confirms suspected recurrence</strong><br><span>Persistent PSA rise, abnormal DRE, or suspicious imaging requires biopsy confirmation.</span></div></div></div></div>
+        <div class="tool-screen" id="tool-complication"><div class="grid four"><article class="card"><span class="tag warn">15%-18%</span><h3>Hematuria</h3><p>Monitor urine color and bleeding trend after treatment.</p></article><article class="card"><span class="tag warn">8%-15%</span><h3>Urinary tract infection</h3><p>Watch for fever, dysuria, frequency, and local protocol for antibiotics.</p></article><article class="card"><span class="tag warn">4%-15%</span><h3>Dysuria</h3><p>Ask about voiding symptoms, not only PSA.</p></article><article class="card"><span class="tag warn">6%-22%</span><h3>Urinary retention</h3><p>Catheter duration depends on ablation extent and site; the consensus commonly suggests about 14 days.</p></article></div></div>`;
+      renderPrep();
+      renderTimeline();
+
+      document.querySelector("#meds .eyebrow").textContent = "Medication Module";
+      document.querySelector("#meds h2").textContent = "Perioperative Medication Timeline";
+      document.querySelector("#meds .section-copy").textContent = "Based on the uploaded training summary, mainly for the BPH/prostate IRE perioperative medication scenario.";
+      document.querySelector("#meds .med-note").innerHTML = "<strong>Safety note:</strong> This module is for training only and is not a prescription. The uploaded notes contain a difference between the live answer and the literature summary regarding antibiotics. Actual medication must follow local policy, infection risk, allergy history, renal function, and physician orders.";
+      document.querySelector("#meds .care-timeline").innerHTML = `
+        <article class="timeline-step"><time>Pre-op >=2 weeks</time><p>Alpha-1 blockers may start; 5-alpha reductase inhibitors are commonly used in BPH to improve voiding and reduce bleeding risk.</p></article>
+        <article class="timeline-step"><time>Pre-op day / 30 min</time><p>Antibiotic prophylaxis depends on local policy; NSAIDs may be considered for pain and inflammation risk.</p></article>
+        <article class="timeline-step"><time>Intraoperative</time><p>The consensus recommends intubated general anesthesia and neuromuscular blockade. Anesthesia, analgesia, blockade, reversal, and emergency drugs are managed by the anesthesiologist.</p></article>
+        <article class="timeline-step"><time>Post-op 3-5 days</time><p>Antibiotics depend on infection risk and local protocols; monitor fever, dysuria, and UTI signs.</p></article>
+        <article class="timeline-step"><time>Post-op 1-2 weeks</time><p>NSAIDs may be used as needed for perineal pain, dysuria, lower abdominal discomfort, or edema.</p></article>
+        <article class="timeline-step"><time>Post-op 1-6 months</time><p>Alpha-1 blockers may continue for 1-3 months; 5-ARIs may continue for 3-6 months. Steroids are non-routine and only short-term for selected edema cases.</p></article>`;
+      document.querySelector(".med-grid").innerHTML = `
+        <article class="med-card searchable"><span class="tag strong">Core</span><h3>Alpha-1 blockers</h3><p>Relax prostatic urethral smooth muscle, improve voiding difficulty, and reduce urinary retention risk.</p><dl><div><dt>Examples</dt><dd>Tamsulosin, doxazosin, terazosin.</dd></div><div><dt>Training-note example</dt><dd>Tamsulosin 0.2 mg qd from 2 weeks pre-op to 1-3 months post-op.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag strong">Common</span><h3>5-alpha reductase inhibitors</h3><p>Suppress conversion to DHT, reduce gland volume and hematuria risk, and inhibit residual gland growth.</p><dl><div><dt>Examples</dt><dd>Finasteride 5 mg qd, dutasteride 0.5 mg qd.</dd></div><div><dt>Timing</dt><dd>From 2 weeks pre-op to 3-6 months post-op in the training summary.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag warn">Protocol-based</span><h3>Antibiotic prophylaxis</h3><p>The literature summary lists it for preventing UTI and puncture/urethral infection, while the live answer noted it may not be needed currently.</p><dl><div><dt>Examples</dt><dd>Levofloxacin, second/third-generation cephalosporins.</dd></div><div><dt>Training-note example</dt><dd>Levofloxacin 0.5 g po qd from 1 day pre-op plus 3-5 days post-op.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag strong">Intra-op</span><h3>Anesthesia and analgesia</h3><p>The consensus recommends intubated general anesthesia but does not prescribe a fixed regimen. Specific drugs are selected by the anesthesiologist.</p><dl><div><dt>Common categories</dt><dd>IV/volatile anesthetics and analgesics.</dd></div><div><dt>Examples</dt><dd>Propofol, sevoflurane, remifentanil, sufentanil; examples only, not prescriptions.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag strong">Intra-op</span><h3>Neuromuscular blockers and reversal</h3><p>The consensus states that neuromuscular blockers are given intraoperatively and reversal is recommended after surgery.</p><dl><div><dt>Purpose</dt><dd>Facilitate intubation, reduce pulse-related muscle contraction, and stabilize the procedure.</dd></div><div><dt>Examples</dt><dd>Rocuronium, cisatracurium; reversal may include neostigmine or sugammadex.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag">As needed</span><h3>NSAIDs</h3><p>Used for perineal pain, dysuria, lower abdominal discomfort, and inflammatory edema.</p><dl><div><dt>Examples</dt><dd>Celecoxib, ibuprofen.</dd></div><div><dt>Timing</dt><dd>Pre-op day and post-op 1-2 weeks as needed.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag">Symptoms</span><h3>Antimuscarinics / beta-3 agonists</h3><p>Consider when frequency, urgency, or nocturia is prominent after surgery.</p><dl><div><dt>Examples</dt><dd>Solifenacin, mirabegron.</dd></div><div><dt>Timing</dt><dd>Post-op 2-4 weeks when indicated.</dd></div></dl></article>
+        <article class="med-card searchable"><span class="tag danger">Non-routine</span><h3>Steroids and hormones</h3><p>Glucocorticoids are not routine; only short-term for severe edema or selected high-risk cases. Androgens/estrogens are contraindicated in the BPH setting.</p><dl><div><dt>Special case</dt><dd>Short low-dose dexamethasone may be considered for severe urethral edema.</dd></div><div><dt>Cancer history</dt><dd>Androgens are contraindicated; persistent PSA rise should follow prostate cancer guidance.</dd></div></dl></article>`;
+
+      document.querySelector("#quiz .eyebrow").textContent = "Exam Bank";
+      document.querySelector("#quiz h2").textContent = "Question bank for training and self-check";
+      document.querySelector("#quiz .section-copy").textContent = "Includes single choice, multiple choice, true/false, ordering, fill-in, short answer, and case questions.";
+      document.querySelector("#quiz .care-timeline").innerHTML = `
+        <article class="timeline-step"><time>Knowledge first</time><p>Review criteria, procedure, follow-up, and complications.</p></article>
+        <article class="timeline-step"><time>Meds / SOP</time><p>Use timelines to understand pre-op, intra-op, and post-op tasks.</p></article>
+        <article class="timeline-step"><time>Basic questions</time><p>Start with single choice and true/false.</p></article>
+        <article class="timeline-step"><time>Advanced questions</time><p>Move to multiple choice, ordering, and fill-in.</p></article>
+        <article class="timeline-step"><time>Cases</time><p>Apply the knowledge to clinical scenarios.</p></article>
+        <article class="timeline-step"><time>Review mistakes</time><p>Use explanations to return to the relevant module.</p></article>`;
+      document.getElementById("prevQuestion").textContent = "Previous";
+      document.getElementById("nextQuestion").textContent = "Next";
+      document.querySelector("#quizFeedback").textContent = "Select one answer.";
+      document.querySelector("#rightCount").nextElementSibling.textContent = "Correct";
+      document.querySelector("#quizScore").nextElementSibling.textContent = "Accuracy";
+      document.querySelector("#favCount").nextElementSibling.textContent = "Favorites";
     }
 
     function setupInstall() {
@@ -2724,6 +2972,7 @@
       renderTimeline();
       renderTerms();
       renderQuiz();
+      applyLanguage();
       updateProgress();
       setupEvents();
       setupTools();
