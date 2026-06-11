@@ -1,4 +1,4 @@
-const CACHE_NAME = "ire-consensus-pwa-v11";
+const CACHE_NAME = "ire-consensus-pwa-v12";
 const CORE_ASSETS = [
   "./",
   "./index.html",
